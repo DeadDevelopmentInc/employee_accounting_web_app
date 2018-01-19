@@ -1,0 +1,10 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using WebAppEmpAcc.Models
+
+@model IEnumerable<WebAppEmpAcc.Models.DepartmentModels.Branch>
+<select id="branch" name="Branch">
+    @foreach (var item in Model)
+    {
+        <option value="@item.Id">@item.Name</option>
+    }
+</select>

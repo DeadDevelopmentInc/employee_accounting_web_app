@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ArrayOfDepartment xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Department>
+    <Id>1</Id>
+    <Name>Sales and Marketing</Name>
+    <IsHead>false</IsHead>
+    <Branchs>
+      <Branch>
+        <Id>1</Id>
+        <Name>Main Sales</Name>
+        <IsHead>false</IsHead>
+        <DepartmentId>1</DepartmentId>
+        <Sectors>
+          <Sector>
+            <Id>1</Id>
+            <Name>BigSales</Name>
+            <IsHead>false</IsHead>
+            <DepartmentId>1</DepartmentId>
+            <BranchId>1</BranchId>
+          </Sector>
+          <Sector>
+            <Id>2</Id>
+            <Name>BigMarket</Name>
+            <IsHead>false</IsHead>
+            <DepartmentId>1</DepartmentId>
+            <BranchId>1</BranchId>
+          </Sector>
+          <Sector>
+            <Id>1</Id>
+            <Name>LittleSales</Name>
+            <IsHead>false</IsHead>
+            <DepartmentId>1</DepartmentId>
+            <BranchId>2</BranchId>
+          </Sector>
+          <Sector>
+            <Id>2</Id>
+            <Name>LittleMarket</Name>
+            <IsHead>false</IsHead>
+            <DepartmentId>1</DepartmentId>
+            <BranchId>2</BranchId>
+          </Sector>
+        </Sectors>
+      </Branch>
+      <Branch>
+        <Id>2</Id>
+        <Name>Little Market</Name>
+        <IsHead>false</IsHead>
+        <DepartmentId>1</DepartmentId>
+        <Sectors />
+      </Branch>
+    </Branchs>
+  </Department>
+</ArrayOfDepartment>
