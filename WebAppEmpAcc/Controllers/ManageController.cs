@@ -54,11 +54,28 @@ namespace WebAppEmpAcc.Controllers
                 throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
 
+            string tmpPosition = null;
+            switch(user.DepartmentRoute.Length)
+            {
+                case 1: tmpPosition = "Head of department"; break;
+                case 2: tmpPosition = "Head of branch"; break;
+                case 3: tmpPosition = "Head of sector"; break;
+                case 4: tmpPosition = "Employeer"; break;
+                case 5: tmpPosition = "Student"; break;
+            }
+
             var model = new IndexViewModel
             {
+                FirstName = user.FrstName,
+                SecondName = user.ScndName,
+                Position = tmpPosition,
                 Username = user.UserName,
                 Email = user.Email,
-                PhoneNumber = user.PhoneNumber,
+                PersonalPhoneNumber = user.PhoneNumber,
+                WorkPhoneNumber = user.WorkPhoneNumber,
+                DepartmentRoute = user.DepartmentRoute,
+                Place = user.Place,
+                Adress = user.Adress,
                 IsEmailConfirmed = user.EmailConfirmed,
                 StatusMessage = StatusMessage
             };
@@ -80,7 +97,7 @@ namespace WebAppEmpAcc.Controllers
             {
                 throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
-
+            //Change email 
             var email = user.Email;
             if (model.Email != email)
             {
@@ -90,16 +107,68 @@ namespace WebAppEmpAcc.Controllers
                     throw new ApplicationException($"Unexpected error occurred setting email for user with ID '{user.Id}'.");
                 }
             }
-
-            var phoneNumber = user.PhoneNumber;
-            if (model.PhoneNumber != phoneNumber)
+            //Change work phone number
+            var workphoneNumber = user.WorkPhoneNumber;
+            if (model.WorkPhoneNumber != workphoneNumber)
             {
-                var setPhoneResult = await _userManager.SetPhoneNumberAsync(user, model.PhoneNumber);
+                var setPhoneResult = await _userManager.SetPhoneNumberAsync(user, model.WorkPhoneNumber);
                 if (!setPhoneResult.Succeeded)
                 {
-                    throw new ApplicationException($"Unexpected error occurred setting phone number for user with ID '{user.Id}'.");
+                    throw new ApplicationException($"Unexpected error occurred setting work phone number for user with ID '{user.Id}'.");
                 }
             }
+            //Change personal phone number
+            var personalNumber = user.PhoneNumber;
+            if (model.PersonalPhoneNumber != personalNumber)
+            {
+                var setPhoneResult = await _userManager.SetPhoneNumberAsync(user, model.PersonalPhoneNumber);
+                if (!setPhoneResult.Succeeded)
+                {
+                    throw new ApplicationException($"Unexpected error occurred setting personal phone number for user with ID '{user.Id}'.");
+                }
+            }
+            //Update information about user
+            if(user.FrstName != model.FirstName)
+            {
+                var updateUser = await _userManager.UpdateAsync(user);
+                if (!updateUser.Succeeded)
+                {
+                    throw new ApplicationException($"Unexpected error occurred setting first name for user with ID '{user.Id}'.");
+                }
+            }
+            if(user.ScndName != model.SecondName)
+            {
+                var updateUser = await _userManager.UpdateAsync(user);
+                if (!updateUser.Succeeded)
+                {
+                    throw new ApplicationException($"Unexpected error occurred setting second name for user with ID '{user.Id}'.");
+                }
+            }
+            if(user.Adress != model.Adress)
+            {
+                var updateUser = await _userManager.UpdateAsync(user);
+                if (!updateUser.Succeeded)
+                {
+                    throw new ApplicationException($"Unexpected error occurred setting adress for user with ID '{user.Id}'.");
+                }
+            }
+            if(user.DepartmentRoute.SequenceEqual(model.DepartmentRoute))
+            {
+                var updateUser = await _userManager.UpdateAsync(user);
+                if (!updateUser.Succeeded)
+                {
+                    throw new ApplicationException($"Unexpected error occurred setting department route for user with ID '{user.Id}'.");
+                }
+            }
+            if(user.Place != model.Place)
+            {
+                var updateUser = await _userManager.UpdateAsync(user);
+                if (!updateUser.Succeeded)
+                {
+                    throw new ApplicationException($"Unexpected error occurred setting place number for user with ID '{user.Id}'.");
+                }
+            }
+
 
             StatusMessage = "Your profile has been updated";
             return RedirectToAction(nameof(Index));

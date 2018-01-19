@@ -11,35 +11,54 @@
             <h4>Create a new account.</h4>
             <hr />
             <div asp-validation-summary="All" class="text-danger"></div>
+<!-- First Name -->
             <div class="form-group">
                 <label asp-for="FirtsName"></label>
                 <input asp-for="FirtsName" class="form-control" />
                 <span asp-validation-for="FirtsName" class="text-danger"></span>
             </div>
+<!-- End First Name -->
+<!-- Second Name -->
             <div class="form-group">
                 <label asp-for="SecondName"></label>
                 <input asp-for="SecondName" class="form-control" />
                 <span asp-validation-for="SecondName" class="text-danger"></span>
             </div>
-            <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-            <div class="dropdown">
-                <button class="btn btn-default dropdown-toggle" type="button" id="menu1" data-toggle="dropdown">
-                    Position
-                    <span class="caret"></span>
-                </button>
-                <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
-                    <li role="presentation"><a role="menuitem" tabindex=1>Heap of department</a></li>
-                    <li role="presentation"><a role="menuitem" tabindex=2>Heap of branch</a></li>
-                    <li role="presentation"><a role="menuitem" tabindex=3>Heap of sector</a></li>
-                    <li role="presentation"><a role="menuitem" tabindex=4>Employeer</a></li>
-                    <li role="presentation"><a role="menuitem" tabindex=5>Student</a></li>
-                </ul>
+<!-- End Second Name -->
+<!-- Photo -->
+<!-- End Photo -->
+<!-- Place -->
+            <div class="form-group">
+                <label asp-for="Place"></label>
+                <input asp-for="Place" class="form-control" />
+                <span asp-validation-for="Place" class="text-danger"></span>
             </div>
+<!-- End Place -->
+<!-- Position -->
+            <div>
+            </div>
+            <div class="dropdown">
+              <button class="btn btn-default dropdown-toggle" type="button" id="menu1" data-toggle="dropdown">
+                Position
+                <span class="caret"></span>
+              </button>
+              <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
+                <li role="presentation"><a role="menuitem" tabindex=1>Heap of department</a></li>
+                <li role="presentation"><a role="menuitem" tabindex=2>Heap of branch</a></li>
+                <li role="presentation"><a role="menuitem" tabindex=3>Heap of sector</a></li>
+                <li role="presentation"><a role="menuitem" tabindex=4>Employeer</a></li>
+                <li role="presentation"><a role="menuitem" tabindex=5>Student</a></li>
+              </ul>
+            </div>
+<!-- End Position -->
+<!-- Email -->
             <div class="form-group">
                 <label asp-for="Email"></label>
                 <input asp-for="Email" class="form-control" />
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
+<!-- End Email -->
+<!-- Password and Confirmation password -->
             <div class="form-group">
                 <label asp-for="Password"></label>
                 <input asp-for="Password" class="form-control" />
@@ -50,6 +69,7 @@
                 <input asp-for="ConfirmPassword" class="form-control" />
                 <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
             </div>
+<!-- End Password -->
             <button type="submit" class="btn btn-default">Register</button>
         </form>
     </div>

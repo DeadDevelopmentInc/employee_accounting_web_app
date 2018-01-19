@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
@@ -11,8 +12,10 @@ namespace WebAppEmpAcc.Models
     {
         public string FrstName { get; set; }
         public string ScndName { get; set; }
-        public int Age { get; set; }
-        public int AccssLvl { get; set; }
-        public string DepartmentRoute { get; set; }
+        public string[] DepartmentRoute { get; set; }
+        public string WorkPhoneNumber { get; set; }
+        public string Place { get; set; }
+        public string Adress { get; set; }
+        public string PathToFile { get; set; } 
     }
 }
