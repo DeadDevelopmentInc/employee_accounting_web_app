@@ -7,58 +7,84 @@
 
 <div class="row">
     <div class="col-md-4">
-        <form asp-route-returnUrl="@ViewData["ReturnUrl"]" method="post">
+        <form asp-route-returnUrl="@ViewData["ReturnUrl"]" method="post" enctype="multipart/form-data">
             <h4>Create a new account.</h4>
             <hr />
             <div asp-validation-summary="All" class="text-danger"></div>
-<!-- First Name -->
+            <!-- First Name -->
             <div class="form-group">
                 <label asp-for="FirtsName"></label>
                 <input asp-for="FirtsName" class="form-control" />
                 <span asp-validation-for="FirtsName" class="text-danger"></span>
             </div>
-<!-- End First Name -->
-<!-- Second Name -->
+            <!-- End First Name -->
+            <!-- Second Name -->
             <div class="form-group">
                 <label asp-for="SecondName"></label>
                 <input asp-for="SecondName" class="form-control" />
                 <span asp-validation-for="SecondName" class="text-danger"></span>
             </div>
-<!-- End Second Name -->
-<!-- Photo -->
-<!-- End Photo -->
-<!-- Place -->
+            <!-- End Second Name -->
+            <!-- Place -->
             <div class="form-group">
                 <label asp-for="Place"></label>
                 <input asp-for="Place" class="form-control" />
                 <span asp-validation-for="Place" class="text-danger"></span>
             </div>
-<!-- End Place -->
-<!-- Position -->
-            <div>
+            <!-- End Place -->
+            <!-- Photo -->
+            <div class="form-group">
+                <input asp-for="ProfilePhoto" type="file" class="form-control" />
             </div>
-            <div class="dropdown">
-              <button class="btn btn-default dropdown-toggle" type="button" id="menu1" data-toggle="dropdown">
-                Position
-                <span class="caret"></span>
-              </button>
-              <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
-                <li role="presentation"><a role="menuitem" tabindex=1>Heap of department</a></li>
-                <li role="presentation"><a role="menuitem" tabindex=2>Heap of branch</a></li>
-                <li role="presentation"><a role="menuitem" tabindex=3>Heap of sector</a></li>
-                <li role="presentation"><a role="menuitem" tabindex=4>Employeer</a></li>
-                <li role="presentation"><a role="menuitem" tabindex=5>Student</a></li>
-              </ul>
+            <!-- End Photo -->
+            <!-- Position -->
+            <div class="form-group">
+                <h3>Choose Department</h3>
+                @Html.DropDownList("Department", ViewBag.Departments as SelectList, new { id = "department" })
+
+
+                @section ScriptsDp{
+            <script type="text/javascript">
+
+                $(document).ready(function () {
+                        $('#department').change(function() {
+                            var id = $(this).val();
+                            $.ajax({
+                                type: 'GET',
+                                url: '@Url.Action("GetDpItems")/' + id,
+                                success: function (data) {
+                                    $('#branch').replaceWith(data);
+                                    $('#branch').change(function () {
+                                        var brId = $(this).val();
+                                        $.ajax({
+                                            type: 'GET',
+                                            url: '@Url.Action("GetBrItem")/' + brId,
+                                            success: function (data) {
+                                                $('#sector').replaceWith(data);
+                                            }
+                                        });
+                                    });
+                                }
+                            });
+                        });
+                    })
+            </script>
+                }   
+
+                <h3>Choose Branch</h3>
+                @Html.DropDownList("Branch", ViewBag.Branchs as SelectList, new { id = "branch" })
+                <h3>Choose Sector</h3>
+                @Html.DropDownList("Sector", ViewBag.Sectors as SelectList, new { id = "sector" })
             </div>
-<!-- End Position -->
-<!-- Email -->
+            <!-- End Position -->
+            <!-- Email -->
             <div class="form-group">
                 <label asp-for="Email"></label>
                 <input asp-for="Email" class="form-control" />
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
-<!-- End Email -->
-<!-- Password and Confirmation password -->
+            <!-- End Email -->
+            <!-- Password and Confirmation password -->
             <div class="form-group">
                 <label asp-for="Password"></label>
                 <input asp-for="Password" class="form-control" />
@@ -69,7 +95,7 @@
                 <input asp-for="ConfirmPassword" class="form-control" />
                 <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
             </div>
-<!-- End Password -->
+            <!-- End Password -->
             <button type="submit" class="btn btn-default">Register</button>
         </form>
     </div>
@@ -78,3 +104,8 @@
 @section Scripts {
     @await Html.PartialAsync("_ValidationScriptsPartial")
 }
+
+
+
+
+    

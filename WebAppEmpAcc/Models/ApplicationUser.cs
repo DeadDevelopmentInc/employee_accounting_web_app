@@ -12,10 +12,11 @@ namespace WebAppEmpAcc.Models
     {
         public string FrstName { get; set; }
         public string ScndName { get; set; }
-        public string[] DepartmentRoute { get; set; }
+        public int AccessLvl { get; set; }
+        public string DepartmentRoute { get; set; }
         public string WorkPhoneNumber { get; set; }
         public string Place { get; set; }
         public string Adress { get; set; }
-        public string PathToFile { get; set; } 
+        public int IdOfProfilePhoto { get; set; } 
     }
 }

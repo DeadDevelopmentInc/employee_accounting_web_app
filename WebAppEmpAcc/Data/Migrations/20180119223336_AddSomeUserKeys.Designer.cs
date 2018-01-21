@@ -3,15 +3,18 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
+using Microsoft.EntityFrameworkCore.Storage;
+using Microsoft.EntityFrameworkCore.Storage.Internal;
 using System;
 using WebAppEmpAcc.Data;
 
 namespace WebAppEmpAcc.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180119223336_AddSomeUserKeys")]
+    partial class AddSomeUserKeys
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -133,8 +136,6 @@ namespace WebAppEmpAcc.Data.Migrations
 
                     b.Property<int>("AccessFailedCount");
 
-                    b.Property<int>("AccessLvl");
-
                     b.Property<string>("Adress");
 
                     b.Property<string>("ConcurrencyStamp")
@@ -149,8 +150,6 @@ namespace WebAppEmpAcc.Data.Migrations
 
                     b.Property<string>("FrstName");
 
-                    b.Property<int>("IdOfProfilePhoto");
-
                     b.Property<bool>("LockoutEnabled");
 
                     b.Property<DateTimeOffset?>("LockoutEnd");
@@ -162,6 +161,8 @@ namespace WebAppEmpAcc.Data.Migrations
                         .HasMaxLength(256);
 
                     b.Property<string>("PasswordHash");
+
+                    b.Property<string>("PathToFile");
 
                     b.Property<string>("PhoneNumber");
 
@@ -209,20 +210,6 @@ namespace WebAppEmpAcc.Data.Migrations
                     b.HasIndex("DepartmentId");
 
                     b.ToTable("Branchs");
-                });
-
-            modelBuilder.Entity("WebAppEmpAcc.Models.DepartmentModels.CurrentUserPhotoModel", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Name");
-
-                    b.Property<string>("Path");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Media");
                 });
 
             modelBuilder.Entity("WebAppEmpAcc.Models.DepartmentModels.Department", b =>

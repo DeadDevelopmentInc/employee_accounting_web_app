@@ -55,7 +55,7 @@ namespace WebAppEmpAcc.Controllers
             }
 
             string tmpPosition = null;
-            switch(user.DepartmentRoute.Length)
+            switch(user.AccessLvl)
             {
                 case 1: tmpPosition = "Head of department"; break;
                 case 2: tmpPosition = "Head of branch"; break;

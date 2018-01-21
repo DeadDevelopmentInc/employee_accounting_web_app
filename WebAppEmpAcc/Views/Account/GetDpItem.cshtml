@@ -1,0 +1,10 @@
+﻿@model IEnumerable<WebAppEmpAcc.Models.DepartmentModels.Branch>
+
+
+<select id="brach" name="Branch">
+    @foreach (var item in Model)
+    {
+        <option value="@item.Id">@item.Name</option>
+    }
+</select>
+

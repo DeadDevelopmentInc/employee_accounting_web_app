@@ -23,6 +23,8 @@ namespace WebAppEmpAcc.Views.Manage
 
         public static string DeleteAccount => "DeleteAccount";
 
+        public static string Administrate => "Administrate";
+
         public static string IndexNavClass(ViewContext viewContext) => PageNavClass(viewContext, Index);
 
         public static string EditSkillsClass(ViewContext viewContext) => PageNavClass(viewContext, EditSkills);
@@ -34,6 +36,8 @@ namespace WebAppEmpAcc.Views.Manage
         public static string TwoFactorAuthenticationNavClass(ViewContext viewContext) => PageNavClass(viewContext, TwoFactorAuthentication);
 
         public static string DeleteAccountClass(ViewContext viewContext) => PageNavClass(viewContext, DeleteAccount);
+
+        public static string AdministrateAccountClass(ViewContext viewContext) => PageNavClass(viewContext, Administrate);
 
         public static string PageNavClass(ViewContext viewContext, string page)
         {

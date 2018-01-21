@@ -11,6 +11,7 @@ namespace WebAppEmpAcc.Data
 {
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
+        public DbSet<CurrentUserPhotoModel> Media { get; set; }
         public DbSet<Department> Departments { get; set; }
         public DbSet<Branch> Branchs { get; set; }
         public DbSet<Sector> Sectors { get; set; }

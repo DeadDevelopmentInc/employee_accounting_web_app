@@ -39,12 +39,15 @@ namespace WebAppEmpAcc.Models.ManageViewModels
         [Display(Name = "Current position")]
         public string Position { get; set; }
 
+        [Required]
+        public string AccssLvl { get; set; }
+
         /// <summary>
         /// Depatment of current user
         /// </summary>
         [Required]
         [Display(Name = "Current department")]
-        public string[] DepartmentRoute { get; set; }
+        public string DepartmentRoute { get; set; }
 
         /// <summary>
         /// Cabinet of current user
@@ -61,7 +64,7 @@ namespace WebAppEmpAcc.Models.ManageViewModels
         public string Email { get; set; }
 
         /// <summary>
-        /// Personal email of current user
+        /// Personal phone of current user
         /// </summary>
         [Phone]
         [Display(Name = "Personal phone number")]
@@ -81,10 +84,13 @@ namespace WebAppEmpAcc.Models.ManageViewModels
         public string Adress { get; set; }
 
         /// <summary>
-        /// path to photo
+        /// Path to photo
         /// </summary>
         public string PathToPhoto { get; set; }
 
         public string StatusMessage { get; set; }
+
+        public bool IsAdmin { get; set; }
+
     }
 }

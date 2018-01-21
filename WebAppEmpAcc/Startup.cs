@@ -29,9 +29,6 @@ namespace WebAppEmpAcc
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DepartmentsConnection")));
-
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
@@ -55,8 +52,6 @@ namespace WebAppEmpAcc
             {
                 app.UseExceptionHandler("/Home/Error");
             }
-
-            UploadXML.ReadXML();
 
             app.UseStaticFiles();
 

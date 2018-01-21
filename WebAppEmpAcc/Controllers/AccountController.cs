@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -13,6 +16,7 @@ using Microsoft.Extensions.Options;
 using WebAppEmpAcc.Data;
 using WebAppEmpAcc.Models;
 using WebAppEmpAcc.Models.AccountViewModels;
+using WebAppEmpAcc.Models.DepartmentModels;
 using WebAppEmpAcc.Services;
 
 namespace WebAppEmpAcc.Controllers
@@ -21,6 +25,8 @@ namespace WebAppEmpAcc.Controllers
     [Route("[controller]/[action]")]
     public class AccountController : Controller
     {
+        private readonly ApplicationDbContext _context;
+        private readonly IHostingEnvironment _appEnvironment;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IEmailSender _emailSender;
@@ -30,12 +36,16 @@ namespace WebAppEmpAcc.Controllers
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             IEmailSender emailSender,
-            ILogger<AccountController> logger)
+            ILogger<AccountController> logger,
+            ApplicationDbContext context,
+            IHostingEnvironment hosting)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
             _logger = logger;
+            _context = context;
+            _appEnvironment = hosting;
         }
 
         [TempData]
@@ -209,8 +219,26 @@ namespace WebAppEmpAcc.Controllers
         [AllowAnonymous]
         public IActionResult Register(string returnUrl = null)
         {
+            int selectedDpIndex = 1;
+            int selectedBrIndex = 1;
+            SelectList departments = new SelectList(_context.Departments, "Id", "Name", selectedDpIndex);
+            ViewBag.Departments = departments;
+            SelectList branchs = new SelectList(_context.Branchs.Where(c => c.DepartmentId == selectedDpIndex), "Id", "Name");
+            ViewBag.Branchs = branchs;
+            SelectList sectors = new SelectList(_context.Sectors.Where(c => c.BranchId == selectedBrIndex), "Id", "Name");
+            ViewBag.Sectors = sectors;
             ViewData["ReturnUrl"] = returnUrl;
             return View();
+        }
+
+        public ActionResult GetDpItems(int id)
+        {
+            return PartialView(_context.Branchs.Where(c => c.DepartmentId == id).ToList());
+        }
+
+        public ActionResult GetBrItems(int id)
+        {
+            return PartialView(_context.Sectors.Where(c => c.BranchId == id).ToList());
         }
 
         [HttpPost]
@@ -222,7 +250,7 @@ namespace WebAppEmpAcc.Controllers
             if (ModelState.IsValid)
             {
                 var user = new ApplicationUser { UserName = model.Email, Email = model.Email,
-                    FrstName = model.FirtsName, ScndName = model.SecondName};
+                    FrstName = model.FirtsName, ScndName = model.SecondName, IdOfProfilePhoto = model.ProfilePhoto.Id};
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
@@ -241,7 +269,7 @@ namespace WebAppEmpAcc.Controllers
 
             // If we got this far, something failed, redisplay form
             return View(model);
-        }
+        }        
 
         [HttpPost]
         [ValidateAntiForgeryToken]

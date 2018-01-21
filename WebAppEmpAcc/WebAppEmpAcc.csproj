@@ -6,6 +6,15 @@
     <StartupObject>WebAppEmpAcc.Program</StartupObject>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="Data\Migrations\20180121112251_AddRoles.cs" />
+    <Compile Remove="Data\Migrations\20180121112251_AddRoles.Designer.cs" />
+    <Compile Remove="Data\Migrations\20180121124853_AddPhotoId.cs" />
+    <Compile Remove="Data\Migrations\20180121124853_AddPhotoId.Designer.cs" />
+    <Compile Remove="Data\Migrations\20180121132219_AddDepartments.cs" />
+    <Compile Remove="Data\Migrations\20180121132219_AddDepartments.Designer.cs" />
+  </ItemGroup>
+
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.5" />
@@ -17,6 +26,11 @@
     <DotNetCliToolReference Include="Microsoft.EntityFrameworkCore.Tools.DotNet" Version="2.0.1" />
     <DotNetCliToolReference Include="Microsoft.Extensions.SecretManager.Tools" Version="2.0.0" />
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Infrastructure\" />
+    <Folder Include="wwwroot\media\" />
   </ItemGroup>
 
 </Project>

@@ -3,11 +3,14 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using WebAppEmpAcc.Models.DepartmentModels;
 
 namespace WebAppEmpAcc.Models.AccountViewModels
 {
     public class RegisterViewModel
     {
+        private CurrentUserPhotoModel _userPhoto;
+
         [Required]
         [Display(Name = "First Name")]
         public string FirtsName { get; set; }
@@ -37,5 +40,19 @@ namespace WebAppEmpAcc.Models.AccountViewModels
         public string ConfirmPassword { get; set; }
 
         public int Position { get; set; }
+
+        public CurrentUserPhotoModel ProfilePhoto
+        {
+            get
+            {
+                return _userPhoto;
+            }
+            set
+            {
+                _userPhoto.Id = value.Id;
+                _userPhoto.Name = value.Name;
+                _userPhoto.Path = value.Path;
+            }
+        }
     }
 }
