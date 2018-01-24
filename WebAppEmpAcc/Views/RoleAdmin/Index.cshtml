@@ -1,5 +1,5 @@
 ﻿@using WebAppEmpAcc.Models
-@model IEnumerable<ApplicationUsersRole>
+@model IEnumerable<ApplicationUserRole>
 
 @{
     ViewBag.Title = "Роли";
@@ -22,20 +22,23 @@
         }
         else
         {
-            foreach (ApplicationUsersRole role in Model)
+            foreach (ApplicationUserRole role in Model)
             {
-                <tr>
-                    <td>@role.Id</td>
-                    <td>@role.Name</td>
-                    <td>
-                        @using (Html.BeginForm("Delete", "RoleAdmin", new { id = role.Id }))
-                        {
-                            @Html.ActionLink("Изменить", "Edit", new { id = role.Id },
-                                          new { @class = "btn btn-primary btn-xs", style = "float:left; margin-right:5px" })
-                            <button class="btn btn-danger btn-xs" type="submit">Удалить</button>
-                        }
-                    </td>
-                </tr>
+            <tr>
+                <td>@role.Id</td>
+                <td>@role.Name</td>
+                <td>
+                    
+                </td>
+                <td>
+                    @using (Html.BeginForm("Delete", "RoleAdmin", new { id = role.Id }))
+        {
+            @Html.ActionLink("Изменить", "Edit", new { id = role.Id },
+                   new { @class = "btn btn-primary btn-xs", style = "float:left; margin-right:5px" })
+            <button class="btn btn-danger btn-xs" type="submit">Удалить</button>
+}
+                </td>
+            </tr>
             }
         }
     </table>

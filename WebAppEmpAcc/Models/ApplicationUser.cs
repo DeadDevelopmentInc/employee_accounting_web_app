@@ -13,7 +13,9 @@ namespace WebAppEmpAcc.Models
         public string FrstName { get; set; }
         public string ScndName { get; set; }
         public int AccessLvl { get; set; }
-        public string DepartmentRoute { get; set; }
+        public string Department { get; set; }
+        public string Sector { get; set; }
+        public string Branch { get; set; }
         public string WorkPhoneNumber { get; set; }
         public string Place { get; set; }
         public string Adress { get; set; }

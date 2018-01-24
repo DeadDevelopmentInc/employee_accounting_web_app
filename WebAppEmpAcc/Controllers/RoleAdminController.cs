@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
@@ -11,17 +10,10 @@ namespace WebAppEmpAcc.Controllers
 {
     public class RoleAdminController : Controller
     {
-        private readonly RoleManager<ApplicationUsersRole> _roleManager;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly RoleManager<ApplicationUserRole> _roleManager;
 
-        public RoleAdminController(RoleManager<ApplicationUsersRole> roleManager,
-            UserManager<ApplicationUser> userManager)
-        {
-            _roleManager = roleManager;
-            _userManager = userManager;
-        }
-        
-        public IActionResult Index()
+        public ActionResult Index()
         {
             return View(_roleManager.Roles);
         }
@@ -37,7 +29,7 @@ namespace WebAppEmpAcc.Controllers
             if (ModelState.IsValid)
             {
                 IdentityResult result
-                    = await _roleManager.CreateAsync(new ApplicationUsersRole(name));
+                    = await _roleManager.CreateAsync(new ApplicationUserRole(name));
 
                 if (result.Succeeded)
                 {
@@ -54,7 +46,7 @@ namespace WebAppEmpAcc.Controllers
         [HttpPost]
         public async Task<ActionResult> Delete(string id)
         {
-            ApplicationUsersRole role = await _roleManager.FindByIdAsync(id);
+            ApplicationUserRole role = await _roleManager.FindByIdAsync(id);
             if (role != null)
             {
                 IdentityResult result = await _roleManager.DeleteAsync(role);
@@ -69,7 +61,7 @@ namespace WebAppEmpAcc.Controllers
             }
             else
             {
-                return View("Error", new string[] { "Role don't found" });
+                return View("Error", new string[] { "Role not found" });
             }
         }
 

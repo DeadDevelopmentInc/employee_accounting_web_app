@@ -9,7 +9,6 @@ namespace WebAppEmpAcc.Models.AccountViewModels
 {
     public class RegisterViewModel
     {
-        private CurrentUserPhotoModel _userPhoto;
 
         [Required]
         [Display(Name = "First Name")]
@@ -25,11 +24,7 @@ namespace WebAppEmpAcc.Models.AccountViewModels
         public string Email { get; set; }
 
         [Required]
-        [Display(Name = "Place")]
-        public string Place { get; set; }
-
-        [Required]
-        [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+        [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 8)]
         [DataType(DataType.Password)]
         [Display(Name = "Password")]
         public string Password { get; set; }
@@ -38,21 +33,5 @@ namespace WebAppEmpAcc.Models.AccountViewModels
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
-
-        public int Position { get; set; }
-
-        public CurrentUserPhotoModel ProfilePhoto
-        {
-            get
-            {
-                return _userPhoto;
-            }
-            set
-            {
-                _userPhoto.Id = value.Id;
-                _userPhoto.Name = value.Name;
-                _userPhoto.Path = value.Path;
-            }
-        }
     }
 }

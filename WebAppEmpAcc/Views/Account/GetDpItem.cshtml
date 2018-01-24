@@ -1,10 +1,26 @@
 ﻿@model IEnumerable<WebAppEmpAcc.Models.DepartmentModels.Branch>
 
 
-<select id="brach" name="Branch">
+<select class="form-control" id="brach" name="Branch">
     @foreach (var item in Model)
     {
         <option value="@item.Id">@item.Name</option>
     }
 </select>
+
+@section Scripts {
+    <script type="text/javascript">
+$('#department').change(function()
+{
+    var id = $(this).val();
+    $.ajax({
+        type: 'GET',
+        url: '@Url.Action("GetDpItem")/' + id,
+        success: function (data) {
+            $('#branch').replaceWith(data);            
+        }
+    });
+});
+    </script>
+}
 

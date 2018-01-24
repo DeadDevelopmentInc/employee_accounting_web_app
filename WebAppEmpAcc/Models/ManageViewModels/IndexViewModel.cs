@@ -35,25 +35,27 @@ namespace WebAppEmpAcc.Models.ManageViewModels
         /// <summary>
         /// Position in heirarghy of headers of current user
         /// </summary>
-        [Required]
         [Display(Name = "Current position")]
         public string Position { get; set; }
 
-        [Required]
         public string AccssLvl { get; set; }
 
         /// <summary>
         /// Depatment of current user
         /// </summary>
-        [Required]
         [Display(Name = "Current department")]
-        public string DepartmentRoute { get; set; }
+        public string Department { get; set; }
+        
+        [Display(Name = "Current sector")]
+        public string Sector { get; set; }
+        
+        [Display(Name = "Current branch")]
+        public string Branch { get; set; }
 
         /// <summary>
         /// Cabinet of current user
         /// </summary>
-        [Required]
-        [Display(Name = "Current place")]
+        [Display(Name = "Current place (Cabinet)")]
         public string Place { get; set; }
 
         /// <summary>

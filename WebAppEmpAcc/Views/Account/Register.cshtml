@@ -25,58 +25,6 @@
                 <span asp-validation-for="SecondName" class="text-danger"></span>
             </div>
             <!-- End Second Name -->
-            <!-- Place -->
-            <div class="form-group">
-                <label asp-for="Place"></label>
-                <input asp-for="Place" class="form-control" />
-                <span asp-validation-for="Place" class="text-danger"></span>
-            </div>
-            <!-- End Place -->
-            <!-- Photo -->
-            <div class="form-group">
-                <input asp-for="ProfilePhoto" type="file" class="form-control" />
-            </div>
-            <!-- End Photo -->
-            <!-- Position -->
-            <div class="form-group">
-                <h3>Choose Department</h3>
-                @Html.DropDownList("Department", ViewBag.Departments as SelectList, new { id = "department" })
-
-
-                @section ScriptsDp{
-            <script type="text/javascript">
-
-                $(document).ready(function () {
-                        $('#department').change(function() {
-                            var id = $(this).val();
-                            $.ajax({
-                                type: 'GET',
-                                url: '@Url.Action("GetDpItems")/' + id,
-                                success: function (data) {
-                                    $('#branch').replaceWith(data);
-                                    $('#branch').change(function () {
-                                        var brId = $(this).val();
-                                        $.ajax({
-                                            type: 'GET',
-                                            url: '@Url.Action("GetBrItem")/' + brId,
-                                            success: function (data) {
-                                                $('#sector').replaceWith(data);
-                                            }
-                                        });
-                                    });
-                                }
-                            });
-                        });
-                    })
-            </script>
-                }   
-
-                <h3>Choose Branch</h3>
-                @Html.DropDownList("Branch", ViewBag.Branchs as SelectList, new { id = "branch" })
-                <h3>Choose Sector</h3>
-                @Html.DropDownList("Sector", ViewBag.Sectors as SelectList, new { id = "sector" })
-            </div>
-            <!-- End Position -->
             <!-- Email -->
             <div class="form-group">
                 <label asp-for="Email"></label>
@@ -103,9 +51,9 @@
 
 @section Scripts {
     @await Html.PartialAsync("_ValidationScriptsPartial")
+
 }
 
 
 
 
-    

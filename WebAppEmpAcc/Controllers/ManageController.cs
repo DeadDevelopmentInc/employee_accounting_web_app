@@ -73,7 +73,7 @@ namespace WebAppEmpAcc.Controllers
                 Email = user.Email,
                 PersonalPhoneNumber = user.PhoneNumber,
                 WorkPhoneNumber = user.WorkPhoneNumber,
-                DepartmentRoute = user.DepartmentRoute,
+                Department = user.Department,
                 Place = user.Place,
                 Adress = user.Adress,
                 IsEmailConfirmed = user.EmailConfirmed,
@@ -97,6 +97,10 @@ namespace WebAppEmpAcc.Controllers
             {
                 throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
+            /*if(!model.Equals(user))
+            {
+                await _userManager.UpdateAsync(user);
+            }*/
             //Change email 
             var email = user.Email;
             if (model.Email != email)
@@ -152,14 +156,6 @@ namespace WebAppEmpAcc.Controllers
                     throw new ApplicationException($"Unexpected error occurred setting adress for user with ID '{user.Id}'.");
                 }
             }
-            if(user.DepartmentRoute.SequenceEqual(model.DepartmentRoute))
-            {
-                var updateUser = await _userManager.UpdateAsync(user);
-                if (!updateUser.Succeeded)
-                {
-                    throw new ApplicationException($"Unexpected error occurred setting department route for user with ID '{user.Id}'.");
-                }
-            }
             if(user.Place != model.Place)
             {
                 var updateUser = await _userManager.UpdateAsync(user);
@@ -168,7 +164,6 @@ namespace WebAppEmpAcc.Controllers
                     throw new ApplicationException($"Unexpected error occurred setting place number for user with ID '{user.Id}'.");
                 }
             }
-
 
             StatusMessage = "Your profile has been updated";
             return RedirectToAction(nameof(Index));

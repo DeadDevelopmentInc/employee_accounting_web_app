@@ -250,7 +250,7 @@ namespace WebAppEmpAcc.Controllers
             if (ModelState.IsValid)
             {
                 var user = new ApplicationUser { UserName = model.Email, Email = model.Email,
-                    FrstName = model.FirtsName, ScndName = model.SecondName, IdOfProfilePhoto = model.ProfilePhoto.Id};
+                    FrstName = model.FirtsName, ScndName = model.SecondName};
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
