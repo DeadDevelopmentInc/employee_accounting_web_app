@@ -43,13 +43,10 @@ namespace WebAppEmpAcc.Models.ManageViewModels
         /// <summary>
         /// Depatment of current user
         /// </summary>
-        [Display(Name = "Current department")]
         public string Department { get; set; }
         
-        [Display(Name = "Current sector")]
         public string Sector { get; set; }
         
-        [Display(Name = "Current branch")]
         public string Branch { get; set; }
 
         /// <summary>
@@ -85,14 +82,7 @@ namespace WebAppEmpAcc.Models.ManageViewModels
         [Display(Name = "Adress")]
         public string Adress { get; set; }
 
-        /// <summary>
-        /// Path to photo
-        /// </summary>
-        public string PathToPhoto { get; set; }
-
         public string StatusMessage { get; set; }
-
-        public bool IsAdmin { get; set; }
 
     }
 }

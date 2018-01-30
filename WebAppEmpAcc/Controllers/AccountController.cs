@@ -16,7 +16,6 @@ using Microsoft.Extensions.Options;
 using WebAppEmpAcc.Data;
 using WebAppEmpAcc.Models;
 using WebAppEmpAcc.Models.AccountViewModels;
-using WebAppEmpAcc.Models.DepartmentModels;
 using WebAppEmpAcc.Services;
 
 namespace WebAppEmpAcc.Controllers
@@ -219,26 +218,8 @@ namespace WebAppEmpAcc.Controllers
         [AllowAnonymous]
         public IActionResult Register(string returnUrl = null)
         {
-            int selectedDpIndex = 1;
-            int selectedBrIndex = 1;
-            SelectList departments = new SelectList(_context.Departments, "Id", "Name", selectedDpIndex);
-            ViewBag.Departments = departments;
-            SelectList branchs = new SelectList(_context.Branchs.Where(c => c.DepartmentId == selectedDpIndex), "Id", "Name");
-            ViewBag.Branchs = branchs;
-            SelectList sectors = new SelectList(_context.Sectors.Where(c => c.BranchId == selectedBrIndex), "Id", "Name");
-            ViewBag.Sectors = sectors;
             ViewData["ReturnUrl"] = returnUrl;
             return View();
-        }
-
-        public ActionResult GetDpItems(int id)
-        {
-            return PartialView(_context.Branchs.Where(c => c.DepartmentId == id).ToList());
-        }
-
-        public ActionResult GetBrItems(int id)
-        {
-            return PartialView(_context.Sectors.Where(c => c.BranchId == id).ToList());
         }
 
         [HttpPost]

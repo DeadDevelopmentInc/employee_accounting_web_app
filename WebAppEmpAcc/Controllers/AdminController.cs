@@ -1,55 +1,94 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.Encodings.Web;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using WebAppEmpAcc.Models;
-using WebAppEmpAcc.Services;
 
-namespace WebAppEmpAcc.Controllers.Administration
+namespace WebAppEmpAcc.Controllers
 {
-    [Route("[controller]/[action]")]
+    [Authorize(Roles ="Admin")]
     public class AdminController : Controller
     {
-        private readonly UserManager<ApplicationUser> _userManager;
-        private readonly SignInManager<ApplicationUser> _signInManager;
-        private readonly RoleManager<ApplicationUserRole> _roleManager;
-
-        public AdminController(UserManager<ApplicationUser> userManager, 
-            RoleManager<ApplicationUserRole> roleManager)
-        {
-            _userManager = userManager;
-            _roleManager = roleManager;
-        }
-
-        public IActionResult Index()
+        // GET: Admin
+        public ActionResult Index()
         {
             return View();
         }
 
-        [HttpPost]
-        public async Task<ActionResult> Delete(string id)
+        // GET: Admin/Details/5
+        public ActionResult Details(int id)
         {
-            ApplicationUser user = await _userManager.FindByIdAsync(id);
+            return View();
+        }
 
-            if (user != null)
+        // GET: Admin/Create
+        public ActionResult Create()
+        {
+            return View();
+        }
+
+        // POST: Admin/Create
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Create(IFormCollection collection)
+        {
+            try
             {
-                IdentityResult result = await _userManager.DeleteAsync(user);
-                if (result.Succeeded)
-                {
-                    return RedirectToAction("Index");
-                }
-                else
-                {
-                    return View("Error", result.Errors);
-                }
+                // TODO: Add insert logic here
+
+                return RedirectToAction(nameof(Index));
             }
-            else
+            catch
             {
-                return View("Error", new string[] { "User not found" });
+                return View();
+            }
+        }
+
+        // GET: Admin/Edit/5
+        public ActionResult Edit(int id)
+        {
+            return View();
+        }
+
+        // POST: Admin/Edit/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit(int id, IFormCollection collection)
+        {
+            try
+            {
+                // TODO: Add update logic here
+
+                return RedirectToAction(nameof(Index));
+            }
+            catch
+            {
+                return View();
+            }
+        }
+
+        // GET: Admin/Delete/5
+        public ActionResult Delete(int id)
+        {
+            return View();
+        }
+
+        // POST: Admin/Delete/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Delete(int id, IFormCollection collection)
+        {
+            try
+            {
+                // TODO: Add delete logic here
+
+                return RedirectToAction(nameof(Index));
+            }
+            catch
+            {
+                return View();
             }
         }
     }

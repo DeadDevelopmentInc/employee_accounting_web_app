@@ -57,11 +57,11 @@ namespace WebAppEmpAcc.Controllers
             string tmpPosition = null;
             switch(user.AccessLvl)
             {
-                case 1: tmpPosition = "Head of department"; break;
-                case 2: tmpPosition = "Head of branch"; break;
-                case 3: tmpPosition = "Head of sector"; break;
-                case 4: tmpPosition = "Employeer"; break;
-                case 5: tmpPosition = "Student"; break;
+                case 4: tmpPosition = "Head of department"; break;
+                case 3: tmpPosition = "Head of branch"; break;
+                case 2: tmpPosition = "Head of sector"; break;
+                case 1: tmpPosition = "Employeer"; break;
+                case 0: tmpPosition = "Student"; break;
             }
 
             var model = new IndexViewModel
@@ -97,13 +97,9 @@ namespace WebAppEmpAcc.Controllers
             {
                 throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
-            /*if(!model.Equals(user))
-            {
-                await _userManager.UpdateAsync(user);
-            }*/
             //Change email 
             var email = user.Email;
-            if (model.Email != email)
+            if (model.Email != email & model.Email != null)
             {
                 var setEmailResult = await _userManager.SetEmailAsync(user, model.Email);
                 if (!setEmailResult.Succeeded)
@@ -132,7 +128,7 @@ namespace WebAppEmpAcc.Controllers
                 }
             }
             //Update information about user
-            if(user.FrstName != model.FirstName)
+            if(user.FrstName != model.FirstName & model.FirstName != null)
             {
                 var updateUser = await _userManager.UpdateAsync(user);
                 if (!updateUser.Succeeded)
@@ -140,7 +136,7 @@ namespace WebAppEmpAcc.Controllers
                     throw new ApplicationException($"Unexpected error occurred setting first name for user with ID '{user.Id}'.");
                 }
             }
-            if(user.ScndName != model.SecondName)
+            if(user.ScndName != model.SecondName & model.SecondName != null)
             {
                 var updateUser = await _userManager.UpdateAsync(user);
                 if (!updateUser.Succeeded)
@@ -148,7 +144,7 @@ namespace WebAppEmpAcc.Controllers
                     throw new ApplicationException($"Unexpected error occurred setting second name for user with ID '{user.Id}'.");
                 }
             }
-            if(user.Adress != model.Adress)
+            if(user.Adress != model.Adress & model.Adress != null)
             {
                 var updateUser = await _userManager.UpdateAsync(user);
                 if (!updateUser.Succeeded)
@@ -156,7 +152,7 @@ namespace WebAppEmpAcc.Controllers
                     throw new ApplicationException($"Unexpected error occurred setting adress for user with ID '{user.Id}'.");
                 }
             }
-            if(user.Place != model.Place)
+            if(user.Place != model.Place & model.Place != null)
             {
                 var updateUser = await _userManager.UpdateAsync(user);
                 if (!updateUser.Succeeded)

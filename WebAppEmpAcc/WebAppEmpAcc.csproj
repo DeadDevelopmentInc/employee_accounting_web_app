@@ -13,6 +13,12 @@
     <Compile Remove="Data\Migrations\20180121124853_AddPhotoId.Designer.cs" />
     <Compile Remove="Data\Migrations\20180121132219_AddDepartments.cs" />
     <Compile Remove="Data\Migrations\20180121132219_AddDepartments.Designer.cs" />
+    <Compile Remove="Data\Migrations\20180129161610_ChangeStructOfDbDepartment.cs" />
+    <Compile Remove="Data\Migrations\20180129161610_ChangeStructOfDbDepartment.Designer.cs" />
+    <Compile Remove="Data\Migrations\20180129162906_ChangeStructOfDbDepartment.cs" />
+    <Compile Remove="Data\Migrations\20180129162906_ChangeStructOfDbDepartment.Designer.cs" />
+    <Compile Remove="Data\Migrations\20180129163629_ChangeStructOfDbDepartment.cs" />
+    <Compile Remove="Data\Migrations\20180129163629_ChangeStructOfDbDepartment.Designer.cs" />
   </ItemGroup>
 
 
@@ -30,7 +36,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Models\Administration\" />
     <Folder Include="wwwroot\media\" />
   </ItemGroup>
 
