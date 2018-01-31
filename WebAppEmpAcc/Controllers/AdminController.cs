@@ -2,94 +2,121 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
+using WebAppEmpAcc.Data;
+using WebAppEmpAcc.Models;
+using WebAppEmpAcc.Models.AccountViewModels;
+using WebAppEmpAcc.Models.ManageViewModels;
 
 namespace WebAppEmpAcc.Controllers
 {
-    [Authorize(Roles ="Admin")]
     public class AdminController : Controller
     {
+        private readonly ApplicationDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
+
+        public AdminController(ApplicationDbContext context,
+            UserManager<ApplicationUser> userManager)
+        {
+            _context = context;
+            _userManager = userManager;
+        }
+
         // GET: Admin
-        public ActionResult Index()
-        {
-            return View();
-        }
+        public IActionResult Index() => View(_userManager.Users.ToList());
 
-        // GET: Admin/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
+        public IActionResult Employees() => View(_userManager.Users.ToList());
 
-        // GET: Admin/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
+        public IActionResult Departments() => View();
+        public IActionResult Projects() => View();
+
+        public IActionResult CreateEmployee() => View();
 
         // POST: Admin/Create
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public async Task<IActionResult> CreateEmployee(RegisterViewModel model)
         {
-            try
+            if (ModelState.IsValid)
             {
-                // TODO: Add insert logic here
-
-                return RedirectToAction(nameof(Index));
+                ApplicationUser user = new ApplicationUser { FrstName = model.FirtsName, ScndName = model.SecondName,
+                    Email = model.Email, UserName = model.Email};
+                var result = await _userManager.CreateAsync(user, model.Password);
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("Employees");
+                }
+                else
+                {
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError(string.Empty, error.Description);
+                    }
+                }
             }
-            catch
-            {
-                return View();
-            }
+            return View(model);
         }
 
         // GET: Admin/Edit/5
-        public ActionResult Edit(int id)
+        public async Task<IActionResult> EditEmployee(string id)
         {
-            return View();
+            ApplicationUser user = await _userManager.FindByIdAsync(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            IndexViewModel model = new IndexViewModel {
+                Id = user.Id,
+                FirstName = user.FrstName,
+                SecondName = user.ScndName,
+                Email = user.Email
+            };
+            return View(model);
         }
 
-        // POST: Admin/Edit/5
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public async Task<IActionResult> EditEmployee(IndexViewModel model)
         {
-            try
+            if (ModelState.IsValid)
             {
-                // TODO: Add update logic here
+                ApplicationUser user = await _userManager.FindByIdAsync(model.Id);
+                if (user != null)
+                {
+                    user.FrstName = model.FirstName;
+                    user.ScndName = model.SecondName;
+                    user.Email = model.Email;
 
-                return RedirectToAction(nameof(Index));
+                    var result = await _userManager.UpdateAsync(user);
+                    if (result.Succeeded)
+                    {
+                        return RedirectToAction("Employees");
+                    }
+                    else
+                    {
+                        foreach (var error in result.Errors)
+                        {
+                            ModelState.AddModelError(string.Empty, error.Description);
+                        }
+                    }
+                }
             }
-            catch
-            {
-                return View();
-            }
+            return View(model);
         }
 
         // GET: Admin/Delete/5
-        public ActionResult Delete(int id)
+        public async Task<IActionResult> DeleteEmployee(string id)
         {
-            return View();
-        }
-
-        // POST: Admin/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
+            ApplicationUser user = await _userManager.FindByIdAsync(id);
+            if (user != null)
             {
-                // TODO: Add delete logic here
-
-                return RedirectToAction(nameof(Index));
+                IdentityResult result = await _userManager.DeleteAsync(user);
             }
-            catch
-            {
-                return View();
-            }
+            return RedirectToAction("Employees");
         }
     }
 }

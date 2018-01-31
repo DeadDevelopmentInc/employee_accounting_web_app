@@ -8,6 +8,7 @@ namespace WebAppEmpAcc.Models.ManageViewModels
 {
     public class IndexViewModel
     {
+        public string Id { get; set; }
         /// <summary>
         /// Username of current user
         /// </summary>

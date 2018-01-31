@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace WebAppEmpAcc.Models.AdminViewModel
+namespace WebAppEmpAcc.Views.Admin
 {
-    public class IndexViewModel
+    public class ManageNavPages
     {
     }
 }
