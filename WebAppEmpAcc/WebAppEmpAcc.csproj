@@ -19,6 +19,8 @@
     <Compile Remove="Data\Migrations\20180129162906_ChangeStructOfDbDepartment.Designer.cs" />
     <Compile Remove="Data\Migrations\20180129163629_ChangeStructOfDbDepartment.cs" />
     <Compile Remove="Data\Migrations\20180129163629_ChangeStructOfDbDepartment.Designer.cs" />
+    <Compile Remove="Data\Migrations\20180131163724_AddPhofilePicture.cs" />
+    <Compile Remove="Data\Migrations\20180131163724_AddPhofilePicture.Designer.cs" />
   </ItemGroup>
 
 

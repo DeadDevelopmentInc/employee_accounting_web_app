@@ -19,6 +19,6 @@ namespace WebAppEmpAcc.Models
         public string WorkPhoneNumber { get; set; }
         public string Place { get; set; }
         public string Adress { get; set; }
-        public int IdOfProfilePhoto { get; set; } 
+        public string IdOfProfilePhoto { get; set; } 
     }
 }

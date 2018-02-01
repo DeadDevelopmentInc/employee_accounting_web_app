@@ -1,0 +1,19 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace WebAppEmpAcc.Models.Departments
+{
+    public class Sector
+    {
+        [Key]
+        public Guid Id { get; set; }
+        public string Name { get; set; }
+        public bool IsHead { get; set; }
+        public Guid HeadId { get; set; }
+        public Guid BrnchId { get; set; }
+        public Guid DprtmntId { get; set; }
+    }
+}

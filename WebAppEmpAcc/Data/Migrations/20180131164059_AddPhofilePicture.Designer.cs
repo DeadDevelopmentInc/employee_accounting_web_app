@@ -11,9 +11,10 @@ using WebAppEmpAcc.Data;
 namespace WebAppEmpAcc.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180131164059_AddPhofilePicture")]
+    partial class AddPhofilePicture
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -255,7 +256,7 @@ namespace WebAppEmpAcc.Data.Migrations
 
             modelBuilder.Entity("WebAppEmpAcc.Models.Picture", b =>
                 {
-                    b.Property<string>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("Path");

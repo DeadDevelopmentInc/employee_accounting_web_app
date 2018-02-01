@@ -4,14 +4,14 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace WebAppEmpAcc.Models
+namespace WebAppEmpAcc.Models.Departments
 {
-    public class ApplicationDepartment
+    public class Department
     {
         [Key]
-        public string Id { get; set; }
-        public string Departments { get; set; }
-        public int Lvl { get; }
+        public Guid Id { get; set; }
+        public string Name { get; set; }
         public bool IsHead { get; set; }
+        public Guid HeadId { get; set; }
     }
 }

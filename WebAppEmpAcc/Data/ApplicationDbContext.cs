@@ -5,11 +5,17 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using WebAppEmpAcc.Models;
+using WebAppEmpAcc.Models.Departments;
 
 namespace WebAppEmpAcc.Data
 {
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
+        public DbSet<Department> Departments { get; set; }
+        public DbSet<Branch> Branchs { get; set; }
+        public DbSet<Sector> Sectors { get; set; }
+        public DbSet<Picture> Pictures { get; set; }
+
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {

@@ -1,15 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using WebAppEmpAcc.Data;
 using WebAppEmpAcc.Models;
 using WebAppEmpAcc.Models.ManageViewModels;
 using WebAppEmpAcc.Services;
@@ -25,6 +29,8 @@ namespace WebAppEmpAcc.Controllers
         private readonly IEmailSender _emailSender;
         private readonly ILogger _logger;
         private readonly UrlEncoder _urlEncoder;
+        private readonly IHostingEnvironment _hostingEnvironment;
+        private readonly ApplicationDbContext _context;
 
         private const string AuthenicatorUriFormat = "otpauth://totp/{0}:{1}?secret={2}&issuer={0}&digits=6";
 
@@ -33,13 +39,17 @@ namespace WebAppEmpAcc.Controllers
           SignInManager<ApplicationUser> signInManager,
           IEmailSender emailSender,
           ILogger<ManageController> logger,
-          UrlEncoder urlEncoder)
+          UrlEncoder urlEncoder,
+          IHostingEnvironment hostingEnvironment,
+          ApplicationDbContext context)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
             _logger = logger;
             _urlEncoder = urlEncoder;
+            _hostingEnvironment = hostingEnvironment;
+            _context = context;
         }
 
         [TempData]
@@ -64,6 +74,7 @@ namespace WebAppEmpAcc.Controllers
                 case 0: tmpPosition = "Student"; break;
             }
 
+            
             var model = new IndexViewModel
             {
                 FirstName = user.FrstName,
@@ -77,9 +88,13 @@ namespace WebAppEmpAcc.Controllers
                 Place = user.Place,
                 Adress = user.Adress,
                 IsEmailConfirmed = user.EmailConfirmed,
-                StatusMessage = StatusMessage
+                StatusMessage = StatusMessage,
             };
-
+            var picture = await _context.Pictures.FindAsync(user.IdOfProfilePhoto);
+            if (picture != null)
+            {
+                model.ProfilePhoto = picture.Path;
+            }
             return View(model);
         }
 
@@ -163,6 +178,37 @@ namespace WebAppEmpAcc.Controllers
 
             StatusMessage = "Your profile has been updated";
             return RedirectToAction(nameof(Index));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UploadPicture(IFormFile picture)
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if(user == null)
+            {
+                throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+            }
+            string path = "/Media/" + Convert.ToString(new Guid()) + ".jpg";
+            using (var fileStream = new FileStream(_hostingEnvironment.WebRootPath + path, FileMode.OpenOrCreate))
+            {               
+                await picture.CopyToAsync(fileStream);
+            }
+            if (user.IdOfProfilePhoto == "0")
+            {
+                var id = new Guid();
+                Picture file = new Picture { Id = Convert.ToString(id), Path = path };
+                user.IdOfProfilePhoto = Convert.ToString(id);
+                _context.Pictures.Add(file);
+            }
+            else
+            {
+                var pictureid = user.IdOfProfilePhoto;
+                var oldPicture = await _context.Pictures.FindAsync(pictureid);
+                oldPicture.Path = path;
+                _context.Update(oldPicture);
+            }
+            _context.SaveChanges();
+            return RedirectToAction("Index");
         }
 
         [HttpPost]

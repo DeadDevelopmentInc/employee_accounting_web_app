@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -84,6 +85,8 @@ namespace WebAppEmpAcc.Models.ManageViewModels
         public string Adress { get; set; }
 
         public string StatusMessage { get; set; }
+
+        public string ProfilePhoto { get; set; }
 
     }
 }
