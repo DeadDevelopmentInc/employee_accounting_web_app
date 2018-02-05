@@ -9,9 +9,14 @@ namespace WebAppEmpAcc.Models.Departments
     public class Department
     {
         [Key]
-        public Guid Id { get; set; }
+        public string Id { get; set; }
+
+        [Required]
         public string Name { get; set; }
+
+        [Required]
         public bool IsHead { get; set; }
-        public Guid HeadId { get; set; }
+
+        public string HeadId { get; set; }
     }
 }

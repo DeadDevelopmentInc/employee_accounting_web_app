@@ -1,0 +1,22 @@
+﻿@model WebAppEmpAcc.Models.Departments.Branch
+@{
+    ViewBag.Title = "Edit branch";
+}
+<form asp-action="EditBranch" asp-controller="Admin">
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <div class="form-group">
+        <label asp-for="Name" class="control-label"></label>
+        <input type="text" asp-for="Name" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="HeadId" class="control-label"></label>
+        <input type="text" asp-for="HeadId" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="DprtmntId" class="control-label"></label>
+        <input type="text" asp-for="DprtmntId" class="form-control" />
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Save" class="btn btn-default" />
+    </div>
+</form>

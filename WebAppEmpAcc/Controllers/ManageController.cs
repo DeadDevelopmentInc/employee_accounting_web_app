@@ -195,9 +195,8 @@ namespace WebAppEmpAcc.Controllers
             }
             if (user.IdOfProfilePhoto == "0")
             {
-                var id = new Guid();
-                Picture file = new Picture { Id = Convert.ToString(id), Path = path };
-                user.IdOfProfilePhoto = Convert.ToString(id);
+                Picture file = new Picture {Path = path };
+                user.IdOfProfilePhoto = file.Id;
                 _context.Pictures.Add(file);
             }
             else
