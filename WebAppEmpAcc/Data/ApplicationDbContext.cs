@@ -5,16 +5,16 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using WebAppEmpAcc.Models;
-using WebAppEmpAcc.Models.DepartmentModels;
+using WebAppEmpAcc.Models.Departments;
 
 namespace WebAppEmpAcc.Data
 {
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
-        public DbSet<CurrentUserPhotoModel> Media { get; set; }
         public DbSet<Department> Departments { get; set; }
         public DbSet<Branch> Branchs { get; set; }
         public DbSet<Sector> Sectors { get; set; }
+        public DbSet<Picture> Pictures { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
@@ -33,5 +33,7 @@ namespace WebAppEmpAcc.Data
             // For example, you can rename the ASP.NET Identity table names and more.
             // Add your customizations after calling base.OnModelCreating(builder);
         }
+
+        public DbSet<WebAppEmpAcc.Models.ApplicationUser> ApplicationUser { get; set; }
     }
 }

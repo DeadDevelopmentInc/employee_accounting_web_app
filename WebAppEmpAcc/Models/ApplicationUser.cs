@@ -11,14 +11,25 @@ namespace WebAppEmpAcc.Models
     public class ApplicationUser : IdentityUser
     {
         public string FrstName { get; set; }
+
         public string ScndName { get; set; }
+
         public int AccessLvl { get; set; }
+
         public string Department { get; set; }
+
         public string Sector { get; set; }
+
         public string Branch { get; set; }
+
         public string WorkPhoneNumber { get; set; }
+
+        public string Position { get; set; }
+
         public string Place { get; set; }
+
         public string Adress { get; set; }
-        public int IdOfProfilePhoto { get; set; } 
+
+        public string IdOfProfilePhoto { get; set; } 
     }
 }

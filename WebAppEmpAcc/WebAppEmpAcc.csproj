@@ -13,13 +13,21 @@
     <Compile Remove="Data\Migrations\20180121124853_AddPhotoId.Designer.cs" />
     <Compile Remove="Data\Migrations\20180121132219_AddDepartments.cs" />
     <Compile Remove="Data\Migrations\20180121132219_AddDepartments.Designer.cs" />
+    <Compile Remove="Data\Migrations\20180129161610_ChangeStructOfDbDepartment.cs" />
+    <Compile Remove="Data\Migrations\20180129161610_ChangeStructOfDbDepartment.Designer.cs" />
+    <Compile Remove="Data\Migrations\20180129162906_ChangeStructOfDbDepartment.cs" />
+    <Compile Remove="Data\Migrations\20180129162906_ChangeStructOfDbDepartment.Designer.cs" />
+    <Compile Remove="Data\Migrations\20180129163629_ChangeStructOfDbDepartment.cs" />
+    <Compile Remove="Data\Migrations\20180129163629_ChangeStructOfDbDepartment.Designer.cs" />
+    <Compile Remove="Data\Migrations\20180131163724_AddPhofilePicture.cs" />
+    <Compile Remove="Data\Migrations\20180131163724_AddPhofilePicture.Designer.cs" />
   </ItemGroup>
 
 
   <ItemGroup>
-    <PackageReference Include="jQuery" Version="3.3.1" />
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.5" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.0.1" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.jQuery.Unobtrusive.Ajax" Version="3.2.3" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.2" PrivateAssets="All" />
   </ItemGroup>
 
@@ -30,7 +38,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Models\Administration\" />
     <Folder Include="wwwroot\media\" />
   </ItemGroup>
 

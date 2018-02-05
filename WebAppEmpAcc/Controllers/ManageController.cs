@@ -1,15 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using WebAppEmpAcc.Data;
 using WebAppEmpAcc.Models;
 using WebAppEmpAcc.Models.ManageViewModels;
 using WebAppEmpAcc.Services;
@@ -25,6 +29,8 @@ namespace WebAppEmpAcc.Controllers
         private readonly IEmailSender _emailSender;
         private readonly ILogger _logger;
         private readonly UrlEncoder _urlEncoder;
+        private readonly IHostingEnvironment _hostingEnvironment;
+        private readonly ApplicationDbContext _context;
 
         private const string AuthenicatorUriFormat = "otpauth://totp/{0}:{1}?secret={2}&issuer={0}&digits=6";
 
@@ -33,13 +39,17 @@ namespace WebAppEmpAcc.Controllers
           SignInManager<ApplicationUser> signInManager,
           IEmailSender emailSender,
           ILogger<ManageController> logger,
-          UrlEncoder urlEncoder)
+          UrlEncoder urlEncoder,
+          IHostingEnvironment hostingEnvironment,
+          ApplicationDbContext context)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
             _logger = logger;
             _urlEncoder = urlEncoder;
+            _hostingEnvironment = hostingEnvironment;
+            _context = context;
         }
 
         [TempData]
@@ -57,13 +67,14 @@ namespace WebAppEmpAcc.Controllers
             string tmpPosition = null;
             switch(user.AccessLvl)
             {
-                case 1: tmpPosition = "Head of department"; break;
-                case 2: tmpPosition = "Head of branch"; break;
-                case 3: tmpPosition = "Head of sector"; break;
-                case 4: tmpPosition = "Employeer"; break;
-                case 5: tmpPosition = "Student"; break;
+                case 4: tmpPosition = "Head of department"; break;
+                case 3: tmpPosition = "Head of branch"; break;
+                case 2: tmpPosition = "Head of sector"; break;
+                case 1: tmpPosition = "Employeer"; break;
+                case 0: tmpPosition = "Student"; break;
             }
 
+            
             var model = new IndexViewModel
             {
                 FirstName = user.FrstName,
@@ -77,9 +88,13 @@ namespace WebAppEmpAcc.Controllers
                 Place = user.Place,
                 Adress = user.Adress,
                 IsEmailConfirmed = user.EmailConfirmed,
-                StatusMessage = StatusMessage
+                StatusMessage = StatusMessage,
             };
-
+            var picture = await _context.Pictures.FindAsync(user.IdOfProfilePhoto);
+            if (picture != null)
+            {
+                model.ProfilePhoto = picture.Path;
+            }
             return View(model);
         }
 
@@ -97,13 +112,9 @@ namespace WebAppEmpAcc.Controllers
             {
                 throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
-            /*if(!model.Equals(user))
-            {
-                await _userManager.UpdateAsync(user);
-            }*/
             //Change email 
             var email = user.Email;
-            if (model.Email != email)
+            if (model.Email != email & model.Email != null)
             {
                 var setEmailResult = await _userManager.SetEmailAsync(user, model.Email);
                 if (!setEmailResult.Succeeded)
@@ -132,7 +143,7 @@ namespace WebAppEmpAcc.Controllers
                 }
             }
             //Update information about user
-            if(user.FrstName != model.FirstName)
+            if(user.FrstName != model.FirstName & model.FirstName != null)
             {
                 var updateUser = await _userManager.UpdateAsync(user);
                 if (!updateUser.Succeeded)
@@ -140,7 +151,7 @@ namespace WebAppEmpAcc.Controllers
                     throw new ApplicationException($"Unexpected error occurred setting first name for user with ID '{user.Id}'.");
                 }
             }
-            if(user.ScndName != model.SecondName)
+            if(user.ScndName != model.SecondName & model.SecondName != null)
             {
                 var updateUser = await _userManager.UpdateAsync(user);
                 if (!updateUser.Succeeded)
@@ -148,7 +159,7 @@ namespace WebAppEmpAcc.Controllers
                     throw new ApplicationException($"Unexpected error occurred setting second name for user with ID '{user.Id}'.");
                 }
             }
-            if(user.Adress != model.Adress)
+            if(user.Adress != model.Adress & model.Adress != null)
             {
                 var updateUser = await _userManager.UpdateAsync(user);
                 if (!updateUser.Succeeded)
@@ -156,7 +167,7 @@ namespace WebAppEmpAcc.Controllers
                     throw new ApplicationException($"Unexpected error occurred setting adress for user with ID '{user.Id}'.");
                 }
             }
-            if(user.Place != model.Place)
+            if(user.Place != model.Place & model.Place != null)
             {
                 var updateUser = await _userManager.UpdateAsync(user);
                 if (!updateUser.Succeeded)
@@ -167,6 +178,36 @@ namespace WebAppEmpAcc.Controllers
 
             StatusMessage = "Your profile has been updated";
             return RedirectToAction(nameof(Index));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UploadPicture(IFormFile picture)
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if(user == null)
+            {
+                throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+            }
+            string path = "/Media/" + Convert.ToString(new Guid()) + ".jpg";
+            using (var fileStream = new FileStream(_hostingEnvironment.WebRootPath + path, FileMode.OpenOrCreate))
+            {               
+                await picture.CopyToAsync(fileStream);
+            }
+            if (user.IdOfProfilePhoto == "0")
+            {
+                Picture file = new Picture {Path = path };
+                user.IdOfProfilePhoto = file.Id;
+                _context.Pictures.Add(file);
+            }
+            else
+            {
+                var pictureid = user.IdOfProfilePhoto;
+                var oldPicture = await _context.Pictures.FindAsync(pictureid);
+                oldPicture.Path = path;
+                _context.Update(oldPicture);
+            }
+            _context.SaveChanges();
+            return RedirectToAction("Index");
         }
 
         [HttpPost]

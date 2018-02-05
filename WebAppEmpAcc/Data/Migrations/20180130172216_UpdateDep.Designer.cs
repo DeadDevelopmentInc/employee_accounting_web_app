@@ -11,9 +11,10 @@ using WebAppEmpAcc.Data;
 namespace WebAppEmpAcc.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180130172216_UpdateDep")]
+    partial class UpdateDep
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -153,7 +154,7 @@ namespace WebAppEmpAcc.Data.Migrations
 
                     b.Property<string>("FrstName");
 
-                    b.Property<string>("IdOfProfilePhoto");
+                    b.Property<int>("IdOfProfilePhoto");
 
                     b.Property<bool>("LockoutEnabled");
 
@@ -172,8 +173,6 @@ namespace WebAppEmpAcc.Data.Migrations
                     b.Property<bool>("PhoneNumberConfirmed");
 
                     b.Property<string>("Place");
-
-                    b.Property<string>("Position");
 
                     b.Property<string>("ScndName");
 
@@ -199,83 +198,6 @@ namespace WebAppEmpAcc.Data.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers");
-                });
-
-            modelBuilder.Entity("WebAppEmpAcc.Models.Departments.Branch", b =>
-                {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("DprtmntId")
-                        .IsRequired();
-
-                    b.Property<string>("DprtmntName");
-
-                    b.Property<string>("HeadId");
-
-                    b.Property<bool>("IsHead");
-
-                    b.Property<string>("Name")
-                        .IsRequired();
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Branchs");
-                });
-
-            modelBuilder.Entity("WebAppEmpAcc.Models.Departments.Department", b =>
-                {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("HeadId");
-
-                    b.Property<bool>("IsHead");
-
-                    b.Property<string>("Name")
-                        .IsRequired();
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Departments");
-                });
-
-            modelBuilder.Entity("WebAppEmpAcc.Models.Departments.Sector", b =>
-                {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("BrnchId")
-                        .IsRequired();
-
-                    b.Property<string>("BrnchName");
-
-                    b.Property<string>("DprtmntId");
-
-                    b.Property<string>("DprtmntName");
-
-                    b.Property<string>("HeadId");
-
-                    b.Property<bool>("IsHead");
-
-                    b.Property<string>("Name")
-                        .IsRequired();
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Sectors");
-                });
-
-            modelBuilder.Entity("WebAppEmpAcc.Models.Picture", b =>
-                {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Path");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Pictures");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

@@ -11,9 +11,10 @@ using WebAppEmpAcc.Data;
 namespace WebAppEmpAcc.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180201093633_EditDepartments")]
+    partial class EditDepartments
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -173,8 +174,6 @@ namespace WebAppEmpAcc.Data.Migrations
 
                     b.Property<string>("Place");
 
-                    b.Property<string>("Position");
-
                     b.Property<string>("ScndName");
 
                     b.Property<string>("Sector");
@@ -203,20 +202,18 @@ namespace WebAppEmpAcc.Data.Migrations
 
             modelBuilder.Entity("WebAppEmpAcc.Models.Departments.Branch", b =>
                 {
-                    b.Property<string>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("DprtmntId")
-                        .IsRequired();
+                    b.Property<Guid>("DprtmntId");
 
                     b.Property<string>("DprtmntName");
 
-                    b.Property<string>("HeadId");
+                    b.Property<Guid>("HeadId");
 
                     b.Property<bool>("IsHead");
 
-                    b.Property<string>("Name")
-                        .IsRequired();
+                    b.Property<string>("Name");
 
                     b.HasKey("Id");
 
@@ -225,15 +222,14 @@ namespace WebAppEmpAcc.Data.Migrations
 
             modelBuilder.Entity("WebAppEmpAcc.Models.Departments.Department", b =>
                 {
-                    b.Property<string>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("HeadId");
+                    b.Property<Guid>("HeadId");
 
                     b.Property<bool>("IsHead");
 
-                    b.Property<string>("Name")
-                        .IsRequired();
+                    b.Property<string>("Name");
 
                     b.HasKey("Id");
 
@@ -242,24 +238,22 @@ namespace WebAppEmpAcc.Data.Migrations
 
             modelBuilder.Entity("WebAppEmpAcc.Models.Departments.Sector", b =>
                 {
-                    b.Property<string>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("BrnchId")
-                        .IsRequired();
+                    b.Property<Guid>("BrnchId");
 
                     b.Property<string>("BrnchName");
 
-                    b.Property<string>("DprtmntId");
+                    b.Property<Guid>("DprtmntId");
 
                     b.Property<string>("DprtmntName");
 
-                    b.Property<string>("HeadId");
+                    b.Property<Guid>("HeadId");
 
                     b.Property<bool>("IsHead");
 
-                    b.Property<string>("Name")
-                        .IsRequired();
+                    b.Property<string>("Name");
 
                     b.HasKey("Id");
 
