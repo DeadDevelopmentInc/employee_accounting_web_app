@@ -146,6 +146,7 @@ namespace WebAppEmpAcc.Controllers
                 {
                     //Get user for head of department
                     var head = await _userManager.FindByIdAsync(model.HeadId);
+                    head = await DeleteOldPositionOfNewHead(head);
                     if(head != null)
                     {
                         head.Department = model.Name;
@@ -181,6 +182,7 @@ namespace WebAppEmpAcc.Controllers
                 if (model.HeadId != null)
                 {
                     var head = await _userManager.FindByIdAsync(model.HeadId);
+                    head = await DeleteOldPositionOfNewHead(head);
                     if (head != null)
                     {
                         if (head.Department == null)
@@ -220,6 +222,7 @@ namespace WebAppEmpAcc.Controllers
                     if (model.HeadId != null)
                     {
                         var head = await _userManager.FindByIdAsync(model.HeadId);
+                        head = await DeleteOldPositionOfNewHead(head);
                         if (head != null)
                         {
                             if (head.Department == null)
@@ -303,6 +306,7 @@ namespace WebAppEmpAcc.Controllers
                             if (sec.HeadId != null)
                             {
                                 var newhead = await _userManager.FindByIdAsync(sec.HeadId);
+                                newhead = await DeleteOldPositionOfNewHead(newhead);
                                 if (newhead != null)
                                 {
                                     HelpFunctionForEditDepartments.ChangeHeadOfSector(ref newhead, ref oldhead, ref sector);
@@ -323,6 +327,7 @@ namespace WebAppEmpAcc.Controllers
                         if(sec.HeadId != sector.HeadId)
                         {
                             var newhead = await _userManager.FindByIdAsync(sec.HeadId);
+                            newhead = await DeleteOldPositionOfNewHead(newhead);
 
                             HelpFunctionForEditDepartments.AddHeadOfSector(ref newhead, ref sector);
                             
@@ -349,7 +354,7 @@ namespace WebAppEmpAcc.Controllers
                 if (branch != null)
                 {
                     branch.Name = brc.Name;
-                    //Check if need change branch of sector
+                    //Check if need change department of branch
                     if (branch.DprtmntId != brc.DprtmntId)
                     {
                         var department = await _context.Departments.FindAsync(brc.DprtmntId);
@@ -369,6 +374,8 @@ namespace WebAppEmpAcc.Controllers
                             if (brc.HeadId != null)
                             {
                                 var newhead = await _userManager.FindByIdAsync(brc.HeadId);
+                                newhead = await DeleteOldPositionOfNewHead(newhead);
+
                                 if (newhead != null)
                                 {
                                     HelpFunctionForEditDepartments.ChangeHeadOfBranch(ref newhead, ref oldhead, ref branch);
@@ -389,6 +396,7 @@ namespace WebAppEmpAcc.Controllers
                         if (brc.HeadId != branch.HeadId)
                         {
                             var newhead = await _userManager.FindByIdAsync(brc.HeadId);
+                            newhead = await DeleteOldPositionOfNewHead(newhead);
 
                             HelpFunctionForEditDepartments.AddHeadOfBranch(ref newhead, ref branch);
 
@@ -427,6 +435,8 @@ namespace WebAppEmpAcc.Controllers
                             if (dep.HeadId != null)
                             {
                                 var newhead = await _userManager.FindByIdAsync(dep.HeadId);
+                                newhead = await DeleteOldPositionOfNewHead(newhead);
+
                                 if (newhead != null)
                                 {
                                     HelpFunctionForEditDepartments.ChangeHeadOfDepartment(ref newhead, ref oldhead, ref department);
@@ -447,6 +457,7 @@ namespace WebAppEmpAcc.Controllers
                         if (dep.HeadId != department.HeadId)
                         {
                             var newhead = await _userManager.FindByIdAsync(dep.HeadId);
+                            newhead = await DeleteOldPositionOfNewHead(newhead);
 
                             HelpFunctionForEditDepartments.AddHeadOfDepartment(ref newhead, ref department);
 
@@ -460,7 +471,7 @@ namespace WebAppEmpAcc.Controllers
                     await _context.SaveChangesAsync();
                 }
             }
-            return View(dep);
+            return RedirectToAction("Departments");
         }
         
         public async Task<IActionResult> DeleteDepartment(string id)
@@ -471,8 +482,7 @@ namespace WebAppEmpAcc.Controllers
                 if (dep.IsHead == true)
                 {
                     var head = await _userManager.FindByIdAsync(dep.HeadId);
-                    head.AccessLvl = 0;
-                    head.Department = null;
+                    HelpFunctionForEditDepartments.RemoveHeadOfDepartment(ref head, ref dep);
                     await _userManager.UpdateAsync(head);
                 }
                 _context.Departments.Remove(dep);
@@ -489,9 +499,7 @@ namespace WebAppEmpAcc.Controllers
                 if (brc.IsHead == true)
                 {
                     var head = await _userManager.FindByIdAsync(brc.HeadId);
-                    head.AccessLvl = 1;
-                    head.Department = null;
-                    head.Branch = null;
+                    HelpFunctionForEditDepartments.RemoveHeadOfBranch(ref head, ref brc);
                     await _userManager.UpdateAsync(head);
                 }
                 _context.Branchs.Remove(brc);
@@ -508,10 +516,7 @@ namespace WebAppEmpAcc.Controllers
                 if (sec.IsHead == true)
                 {
                     var head = await _userManager.FindByIdAsync(sec.HeadId);
-                    head.AccessLvl = 1;
-                    head.Department = null;
-                    head.Branch = null;
-                    head.Sector = null;
+                    HelpFunctionForEditDepartments.RemoveHeadOfSector(ref head, ref sec);
                     await _userManager.UpdateAsync(head);
                 }
                 _context.Sectors.Remove(sec);
@@ -519,5 +524,43 @@ namespace WebAppEmpAcc.Controllers
             }
             return RedirectToAction("Sectors");
         }
+
+        #region Helpers
+
+        private async Task<ApplicationUser> DeleteOldPositionOfNewHead(ApplicationUser user)
+        {
+            if(user.AccessLvl > 1 & user.Position != null) // 1 level of access for employee
+            {
+                switch(user.AccessLvl)
+                {
+                    case 2:
+                        {
+                            var sector = await _context.Sectors.FindAsync(user.Position);
+                            HelpFunctionForEditDepartments.RemoveHeadOfSector(ref user, ref sector);
+                            _context.Sectors.Update(sector);
+                        }
+                        break;
+                    case 3:
+                        {
+                            var branch = await _context.Branchs.FindAsync(user.Position);
+                            HelpFunctionForEditDepartments.RemoveHeadOfBranch(ref user, ref branch);
+                            _context.Branchs.Update(branch);
+                        }
+                        break;
+                    case 4:
+                        {
+                            var department = await _context.Departments.FindAsync(user.Position);
+                            HelpFunctionForEditDepartments.RemoveHeadOfDepartment(ref user, ref department);
+                            _context.Departments.Update(department);
+                        }
+                        break;
+                }
+                await _userManager.UpdateAsync(user);
+                await _context.SaveChangesAsync();
+            }
+            return user;
+        }
+
+        #endregion
     }
 }

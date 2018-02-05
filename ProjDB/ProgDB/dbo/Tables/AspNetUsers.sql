@@ -21,9 +21,10 @@
     [Place]                NVARCHAR (MAX)     NULL,
     [WorkPhoneNumber]      NVARCHAR (MAX)     NULL,
     [AccessLvl]            INT                NULL,
-    [IdOfProfilePhoto]     INT                DEFAULT ((0)) NOT NULL,
+    [IdOfProfilePhoto]     NVARCHAR (MAX)     NULL,
     [Branch]               NVARCHAR (MAX)     NULL,
     [Department]           NVARCHAR (MAX)     NULL,
+    [Position]             NVARCHAR (MAX)     NULL,
     CONSTRAINT [PK_AspNetUsers] PRIMARY KEY CLUSTERED ([Id] ASC)
 );
 

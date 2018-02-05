@@ -3,8 +3,6 @@
     [ConcurrencyStamp] NVARCHAR (MAX) NULL,
     [Name]             NVARCHAR (256) NULL,
     [NormalizedName]   NVARCHAR (256) NULL,
-    [Departments]      NVARCHAR (256) NULL,
-    [IsHead]           BIT            NULL,
     CONSTRAINT [PK_AspNetRoles] PRIMARY KEY CLUSTERED ([Id] ASC)
 );
 

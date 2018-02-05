@@ -17,11 +17,13 @@ namespace WebAppEmpAcc.Models.Departments
             oldHead.Branch = null;
             oldHead.Department = null;
             oldHead.Sector = null;
+            oldHead.Position = null;
 
             newHead.AccessLvl = 2; //2 access level for head of sector
             newHead.Sector = sec.Name;
             newHead.Branch = sec.BrnchName;
             newHead.Department = sec.DprtmntName;
+            newHead.Position = sec.Id;
 
             sec.HeadId = newHead.Id;
         }
@@ -36,11 +38,13 @@ namespace WebAppEmpAcc.Models.Departments
             oldHead.Branch = null;
             oldHead.Department = null;
             oldHead.Sector = null;
+            oldHead.Position = null;
 
             newHead.AccessLvl = 3; //3 access level for head of branch
             newHead.Sector = null;
             newHead.Branch = brc.Name;
             newHead.Department = brc.DprtmntName;
+            newHead.Position = brc.Id;
 
             brc.HeadId = newHead.Id;
         }
@@ -55,11 +59,13 @@ namespace WebAppEmpAcc.Models.Departments
             oldHead.Branch = null;
             oldHead.Department = null;
             oldHead.Sector = null;
+            oldHead.Position = null;
 
             newHead.AccessLvl = 4; //4 access level for head of department
             newHead.Sector = null;
             newHead.Branch = null;
             newHead.Department = dep.Name;
+            newHead.Position = dep.Id;
 
             dep.HeadId = newHead.Id;
         }
@@ -73,6 +79,7 @@ namespace WebAppEmpAcc.Models.Departments
             newHead.Sector = sector.Name;
             newHead.Branch = sector.BrnchName;
             newHead.Department = sector.DprtmntName;
+            newHead.Position = sector.Id;
 
             sector.IsHead = true;
             sector.HeadId = newHead.Id;
@@ -87,6 +94,7 @@ namespace WebAppEmpAcc.Models.Departments
             newHead.Sector = null;
             newHead.Branch = branch.Name;
             newHead.Department = branch.DprtmntName;
+            newHead.Position = branch.Id;
 
             branch.IsHead = true;
             branch.HeadId = newHead.Id;
@@ -101,6 +109,7 @@ namespace WebAppEmpAcc.Models.Departments
             newHead.Sector = null;
             newHead.Branch = null;
             newHead.Department = department.Name;
+            newHead.Position = department.Id;
 
             department.IsHead = true;
             department.HeadId = newHead.Id;
@@ -115,6 +124,7 @@ namespace WebAppEmpAcc.Models.Departments
             oldHead.Branch = null;
             oldHead.Department = null;
             oldHead.Sector = null;
+            oldHead.Position = null;
 
             sector.IsHead = false;
             sector.HeadId = null;
@@ -128,6 +138,7 @@ namespace WebAppEmpAcc.Models.Departments
             oldHead.AccessLvl = 1;
             oldHead.Branch = null;
             oldHead.Department = null;
+            oldHead.Position = null;
 
             branch.IsHead = false;
             branch.HeadId = null;
@@ -140,6 +151,7 @@ namespace WebAppEmpAcc.Models.Departments
         {
             oldHead.AccessLvl = 1;
             oldHead.Department = null;
+            oldHead.Position = null;
 
             department.IsHead = false;
             department.HeadId = null;

@@ -24,6 +24,8 @@ namespace WebAppEmpAcc.Models
 
         public string WorkPhoneNumber { get; set; }
 
+        public string Position { get; set; }
+
         public string Place { get; set; }
 
         public string Adress { get; set; }
