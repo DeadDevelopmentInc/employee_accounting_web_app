@@ -45,10 +45,13 @@ namespace WebAppEmpAcc.Models.ManageViewModels
         /// <summary>
         /// Depatment of current user
         /// </summary>
+        [Display(Name = "Current department")]
         public string Department { get; set; }
-        
+
+        [Display(Name = "Current sector")]
         public string Sector { get; set; }
-        
+
+        [Display(Name = "Current branch")]
         public string Branch { get; set; }
 
         /// <summary>
@@ -87,6 +90,9 @@ namespace WebAppEmpAcc.Models.ManageViewModels
         public string StatusMessage { get; set; }
 
         public string ProfilePhoto { get; set; }
+
+        [Display(Name ="Code for move to another department")]
+        public string CodeForChangePosition { get; set; }
 
     }
 }

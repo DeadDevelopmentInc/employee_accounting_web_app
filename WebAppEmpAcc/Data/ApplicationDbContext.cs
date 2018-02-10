@@ -11,9 +11,29 @@ namespace WebAppEmpAcc.Data
 {
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
+        /// <summary>
+        /// Database with positions
+        /// </summary>
+        public DbSet<Position> Positions { get; set; }
+
+        /// <summary>
+        /// Database with departments
+        /// </summary>
         public DbSet<Department> Departments { get; set; }
+
+        /// <summary>
+        /// Database with branchs
+        /// </summary>
         public DbSet<Branch> Branchs { get; set; }
+
+        /// <summary>
+        /// Database with sectors
+        /// </summary>
         public DbSet<Sector> Sectors { get; set; }
+
+        /// <summary>
+        /// Database with pictures of user
+        /// </summary>
         public DbSet<Picture> Pictures { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
@@ -34,6 +54,6 @@ namespace WebAppEmpAcc.Data
             // Add your customizations after calling base.OnModelCreating(builder);
         }
 
-        public DbSet<WebAppEmpAcc.Models.ApplicationUser> ApplicationUser { get; set; }
+        public DbSet<ApplicationUser> ApplicationUser { get; set; }
     }
 }

@@ -28,28 +28,41 @@ namespace WebAppEmpAcc.Controllers
             _userManager = userManager;
         }
 
-        // GET: Admin
-        public IActionResult Index() => View(_userManager.Users.ToList());
+        //GET: Admin
+        public IActionResult Index() => View();
 
+        //GET: Employees
         public IActionResult Employees() => View(_userManager.Users.ToList());
 
+        //GET: Departments
         public IActionResult Departments() => View(_context.Departments.ToList());
 
+        //GET:  Branchs
         public IActionResult Branchs() => View(_context.Branchs.ToList());
 
+        //GET: Sectors
         public IActionResult Sectors() => View(_context.Sectors.ToList());
 
+        //GET: Projects
         public IActionResult Projects() => View();
 
+        //GET: Creat Employee
         public IActionResult CreateEmployee() => View();
 
+        //GET: Creat Department
         public IActionResult CreateDepartment() => View();
 
+        //GET: Creat Branch
         public IActionResult CreateBranch() => View();
 
+        //GET: Creat Sector
         public IActionResult CreateSector() => View();
 
-        // POST: Admin/Create
+        /// <summary>
+        /// POST: Admin/Create Employee
+        /// </summary>
+        /// <param name="model"> Model of new employee</param>
+        /// <returns>View</returns>
         [HttpPost]
         public async Task<IActionResult> CreateEmployee(RegisterViewModel model)
         {
@@ -73,7 +86,11 @@ namespace WebAppEmpAcc.Controllers
             return View(model);
         }
 
-        // GET: Admin/Edit/5
+        /// <summary>
+        /// GET: Admin/Edit Employee
+        /// </summary>
+        /// <param name="id">Id of employee</param>
+        /// <returns>View</returns>
         public async Task<IActionResult> EditEmployee(string id)
         {
             ApplicationUser user = await _userManager.FindByIdAsync(id);
@@ -90,6 +107,11 @@ namespace WebAppEmpAcc.Controllers
             return View(model);
         }
 
+        /// <summary>
+        /// POST: Admin/Edit Employee
+        /// </summary>
+        /// <param name="model">Model of current emploee</param>
+        /// <returns>View</returns>
         [HttpPost]
         public async Task<IActionResult> EditEmployee(IndexViewModel model)
         {
@@ -119,7 +141,11 @@ namespace WebAppEmpAcc.Controllers
             return View(model);
         }
 
-        // GET: Admin/Delete/5
+        /// <summary>
+        /// GET: Admin/Delete Employee
+        /// </summary>
+        /// <param name="id">Id of selected employee for deleting</param>
+        /// <returns>Redirect to Employee Action </returns>
         public async Task<IActionResult> DeleteEmployee(string id)
         {
             ApplicationUser user = await _userManager.FindByIdAsync(id);
@@ -130,6 +156,11 @@ namespace WebAppEmpAcc.Controllers
             return RedirectToAction("Employees");
         }
 
+        /// <summary>
+        /// POST: Admin/Create Department
+        /// </summary>
+        /// <param name="model">Model of new department</param>
+        /// <returns>View</returns>
         [HttpPost]
         public async Task<IActionResult> CreateDepartment(Department model)
         {
@@ -165,6 +196,11 @@ namespace WebAppEmpAcc.Controllers
             return View(model);
         }
 
+        /// <summary>
+        /// POST: Admin/Create Branch
+        /// </summary>
+        /// <param name="model">Model of new branch</param>
+        /// <returns>View</returns>
         [HttpPost]
         public async Task<IActionResult> CreateBranch(Branch model)
         {
@@ -202,6 +238,11 @@ namespace WebAppEmpAcc.Controllers
             return View(model);
         }
 
+        /// <summary>
+        /// POST: Admin/Create Sector
+        /// </summary>
+        /// <param name="model">Model of new sector</param>
+        /// <returns>View</returns>
         [HttpPost]
         public async Task<IActionResult> CreateSector(Sector model)
         {
@@ -243,6 +284,11 @@ namespace WebAppEmpAcc.Controllers
             return View(model);
         }
 
+        /// <summary>
+        /// GET: Admin/Edit Department
+        /// </summary>
+        /// <param name="id">Id of department</param>
+        /// <returns>View</returns>
         public async Task<IActionResult> EditDepartment(string id)
         {
             Department dep = await _context.Departments.FindAsync(id);
@@ -253,7 +299,12 @@ namespace WebAppEmpAcc.Controllers
             }
             return View(dep);
         }
-        
+
+        /// <summary>
+        /// GET: Admin/Edit Branch
+        /// </summary>
+        /// <param name="id">Id of branch</param>
+        /// <returns>View</returns>
         public async Task<IActionResult> EditBranch(string id)
         {
             Branch brh = await _context.Branchs.FindAsync(id);
@@ -265,6 +316,11 @@ namespace WebAppEmpAcc.Controllers
             return View(brh);
         }
 
+        /// <summary>
+        /// GET: Admin/Edit Sector
+        /// </summary>
+        /// <param name="id">Id of sector</param>
+        /// <returns>View</returns>
         public async Task<IActionResult> EditSector(string id)
         {
             Sector sec = await _context.Sectors.FindAsync(id);
@@ -276,6 +332,11 @@ namespace WebAppEmpAcc.Controllers
             return View(sec);
         }
 
+        /// <summary>
+        /// POST: Admin/Edit Sector
+        /// </summary>
+        /// <param name="sec">Model of current sector</param>
+        /// <returns>Redirect to Action Sectors</returns>
         [HttpPost]
         public async Task<IActionResult> EditSector(Sector sec)
         {
@@ -344,6 +405,11 @@ namespace WebAppEmpAcc.Controllers
             return RedirectToAction("Sectors");
         }
 
+        /// <summary>
+        /// POST: Admin/Edit Branch
+        /// </summary>
+        /// <param name="sec">Model of current branch</param>
+        /// <returns>Redirect to Action Branchs</returns>
         [HttpPost]
         public async Task<IActionResult> EditBranch(Branch brc)
         {
@@ -413,6 +479,11 @@ namespace WebAppEmpAcc.Controllers
             return RedirectToAction("Branchs");
         }
 
+        /// <summary>
+        /// POST: Admin/Edit Department
+        /// </summary>
+        /// <param name="sec">Model of current department</param>
+        /// <returns>Redirect to Action Departments</returns>
         [HttpPost]
         public async Task<IActionResult> EditDepartment(Department dep)
         {
@@ -474,6 +545,11 @@ namespace WebAppEmpAcc.Controllers
             return RedirectToAction("Departments");
         }
         
+        /// <summary>
+        /// GET: Admin/Delete Department
+        /// </summary>
+        /// <param name="id">Id of removable department</param>
+        /// <returns>Redirect to Action Departments</returns>
         public async Task<IActionResult> DeleteDepartment(string id)
         {
             Department dep = await _context.Departments.FindAsync(id);
@@ -491,6 +567,11 @@ namespace WebAppEmpAcc.Controllers
             return RedirectToAction("Departments");
         }
 
+        /// <summary>
+        /// GET: Admin/Delete Branch
+        /// </summary>
+        /// <param name="id">Id of removable branch</param>
+        /// <returns>Redirect to Action Branchs</returns>
         public async Task<IActionResult> DeleteBranch(string id)
         {
             Branch brc = await _context.Branchs.FindAsync(id);
@@ -506,8 +587,13 @@ namespace WebAppEmpAcc.Controllers
                 await _context.SaveChangesAsync();
             }
             return RedirectToAction("Branchs");
-        }        
+        }
 
+        /// <summary>
+        /// GET: Admin/Delete Sector
+        /// </summary>
+        /// <param name="id">Id of removable sector</param>
+        /// <returns>Redirect to Action Sectors</returns>
         public async Task<IActionResult> DeleteSector(string id)
         {
             Sector sec = await _context.Sectors.FindAsync(id);
@@ -527,6 +613,11 @@ namespace WebAppEmpAcc.Controllers
 
         #region Helpers
 
+        /// <summary>
+        /// Check and delete if current user be a head
+        /// </summary>
+        /// <param name="user">Test User</param>
+        /// <returns>Return user</returns>
         private async Task<ApplicationUser> DeleteOldPositionOfNewHead(ApplicationUser user)
         {
             if(user.AccessLvl > 1 & user.Position != null) // 1 level of access for employee

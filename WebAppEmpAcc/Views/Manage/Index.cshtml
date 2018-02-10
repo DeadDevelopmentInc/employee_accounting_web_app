@@ -38,10 +38,16 @@
             </div>
 
             <!-- End Position -->
+            <!-- Code for move to another department -->
+            <div class="form-group">
+                <label asp-for="CodeForChangePosition"></label>
+                <input asp-for="CodeForChangePosition" class="form-control"/>
+            </div>
+            <!-- End Code for move to another department -->
             <!-- Place -->
             <div class="form-group">
                 <label asp-for="Place"></label>
-                <input asp-for="Place" class="form-control"/>
+                <input asp-for="Place" class="form-control" />
             </div>
             <!-- End Place -->
             <!-- Adress -->
@@ -55,17 +61,17 @@
             <div class="form-group">
                 <label asp-for="Email"></label>
                 @if (Model.IsEmailConfirmed)
-                {
-                    <div class="input-group">
-                        <input asp-for="Email" class="form-control" />
-                        <span class="input-group-addon" aria-hidden="true"><span class="glyphicon glyphicon-ok text-success"></span></span>
-                    </div>
-                }
-                else
-                {
-                    <input asp-for="Email" class="form-control" />
-                    <button asp-action="SendVerificationEmail" class="btn btn-link">Send verification email</button>
-                }
+        {
+            <div class="input-group">
+                <input asp-for="Email" class="form-control" />
+                <span class="input-group-addon" aria-hidden="true"><span class="glyphicon glyphicon-ok text-success"></span></span>
+            </div>
+}
+else
+{
+        <input asp-for="Email" class="form-control" />
+        <button asp-action="SendVerificationEmail" class="btn btn-link">Send verification email</button>
+}
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
             <!-- End Email -->
