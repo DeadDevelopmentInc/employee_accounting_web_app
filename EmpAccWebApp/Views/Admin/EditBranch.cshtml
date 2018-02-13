@@ -1,0 +1,38 @@
+﻿@model WebAppEmpAcc.Models.Departments.Branch
+@{
+    ViewBag.Title = "Edit branch";
+}
+<form asp-action="EditBranch" asp-controller="Admin">
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <div class="form-group">
+        <label asp-for="Name" class="control-label"></label>
+        <input type="text" asp-for="Name" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="HeadFullName"></label>
+        <input type="text" id="HeadEmpl" asp-for="HeadFullName" />
+    </div>
+    <div class="form-group">
+        <label asp-for="DprtmntName"></label>
+        <input type="text" id="HeadDep" asp-for="DprtmntName" />
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Save" class="btn btn-default" />
+    </div>
+</form>
+
+@section Scripts{
+    <script src='@Url.Content("~/Scripts/jquery/dist/jquery.js")' type="text/javascript"></script>
+    <script src='@Url.Content("~/Scripts/jquery-ui/jquery-ui-1.12.1.js")' type="text/javascript"></script>
+
+    <script type="text/javascript">
+    $(function () {
+        var autocompleteUrl = '@Url.Action("AutocompleteSearch")';
+            $("input#HeadEmpl").autocomplete({
+            source: autocompleteUrl,
+            minLength: 2
+            });
+    });
+    </script>
+
+}

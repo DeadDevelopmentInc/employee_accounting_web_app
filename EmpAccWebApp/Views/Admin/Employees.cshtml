@@ -1,0 +1,52 @@
+﻿
+@model IEnumerable<EmpAccWebApp.Models.ApplicationUser>
+
+@{
+    Layout = "~/Views/Admin/_Layout.cshtml";
+}
+
+<p>
+    @Html.ActionLink("Create new employee", "CreateEmployee", "Admin", null, null)
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.FullName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.WorkPhoneNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Place)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.FullName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.WorkPhoneNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Place)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                <a> @Html.ActionLink("Edit", "EditEmployee", "Admin", new { id = item.Id }, null)</a>
+                <a> @Html.ActionLink("Edit", "DeleteEmployee", "Admin", new { id = item.Id })</a>
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>
