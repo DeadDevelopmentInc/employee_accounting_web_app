@@ -1,0 +1,43 @@
+﻿@model EmpAccWebApp.Models.AdminViewModels.DepartmentViewModel
+@{
+    Layout = "~/Views/Admin/_Layout.cshtml";
+    ViewBag.Title = "Edit department";
+}
+
+@using (Html.BeginForm("EditDepartment", "Admin", FormMethod.Post, new { @class = "form-inline", role = "form" }))
+{
+    @Html.ValidationSummary(true)
+    <div class="form-group">
+        <div class="col-md-10">
+            @Html.LabelFor(m => m.Name, new { @class = "control-label" })
+            @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.Name)
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-10">
+            @Html.LabelFor(m => m.HeadFullName, new { @class = "control-label" })
+            @Html.TextBoxFor(m => m.HeadFullName, new { @class = "form-control", id = "HeadEmpl" })
+            @Html.ValidationMessageFor(m => m.HeadFullName)
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Save" class="btn btn-default" />
+        </div>
+    </div>
+}
+
+
+@section Scripts{
+    <script type="text/javascript">
+    $(function () {
+        var autocompleteUrl = '@Url.Action("AutocompleteSearch")';
+            $("input#HeadEmpl").autocomplete({
+            source: autocompleteUrl,
+            minLength: 2
+            });
+    });
+    </script>
+
+}
