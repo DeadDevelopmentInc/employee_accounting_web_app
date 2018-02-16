@@ -91,6 +91,8 @@ namespace EmpAccWebApp.Models
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+
+        public string PhotoProfile { get; set; } = "Content/media/00000-000.jpg";
     }
 
     public class ResetPasswordViewModel

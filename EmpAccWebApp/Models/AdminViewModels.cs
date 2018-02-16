@@ -22,10 +22,37 @@ namespace EmpAccWebApp.Models
             public bool RememberMe { get; set; }
         }
 
+        public class RegisterNewUserViewModel
+        {
+            [Required]
+            [Display(Name = "First Name")]
+            public string FirtsName { get; set; }
+
+            [Required]
+            [Display(Name = "Second Name")]
+            public string SecondName { get; set; }
+
+            [Required]
+            [Display(Name = "Surname")]
+            public string Surname { get; set; }
+
+            [Required]
+            [EmailAddress]
+            [Display(Name = "Email")]
+            public string Email { get; set; }
+
+            [Required]
+            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 8)]
+            [DataType(DataType.Password)]
+            [Display(Name = "Password")]
+            public string Password { get; set; }
+        }
+
         public class DepartmentViewModel
         {
             public string Id { get; set; }
 
+            [Required]
             [Display(Name = "Department name")]
             public string Name { get; set; }
             [Display(Name = "Head Full name")]
@@ -36,10 +63,14 @@ namespace EmpAccWebApp.Models
         {
             public string Id { get; set; }
 
-            [Display(Name = "Department name")]
+            [Required]
+            [Display(Name = "Branch name")]
             public string Name { get; set; }
+
             [Display(Name = "Head Full name")]
             public string HeadFullName { get; set; }
+
+            [Required]
             [Display(Name = "Department name")]
             public string DepartmentName { get; set; }
         }
@@ -48,11 +79,13 @@ namespace EmpAccWebApp.Models
         {
             public string Id { get; set; }
 
-            [Display(Name = "Department name")]
+            [Required]
+            [Display(Name = "Sector name")]
             public string Name { get; set; }
             [Display(Name = "Head Full name")]
             public string HeadFullName { get; set; }
-            [Display(Name = "Department name")]
+            [Required]
+            [Display(Name = "Branch name")]
             public string BranchName { get; set; }
         }
 

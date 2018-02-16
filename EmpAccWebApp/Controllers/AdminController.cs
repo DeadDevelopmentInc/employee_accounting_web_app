@@ -17,6 +17,13 @@ namespace EmpAccWebApp.Controllers
     {
         private ApplicationDbContext _context;
         private ApplicationUserManager _userManager;
+        //Access levels for users
+        private const byte ADMINTACCSSLVL = 5;
+        private const byte DEPARTMENTACCSSLVL = 4;
+        private const byte BRANCHACCSSLVL = 3;
+        private const byte SECTORACCSSLVL = 2;
+        private const byte EMPLOYEEACCSSLVL = 1;
+        private const byte STUDENTACCSSLVL = 0;
 
         public AdminController() { }
 
@@ -55,7 +62,7 @@ namespace EmpAccWebApp.Controllers
         public ActionResult Index() => PartialView();
 
         //GET: Employees
-        public ActionResult Employees() => PartialView(_userManager.Users.ToList());
+        public ActionResult Employees() => PartialView(UserManager.Users.ToList());
 
         //GET: Departments
         public async Task<ActionResult> Departments()
@@ -94,7 +101,7 @@ namespace EmpAccWebApp.Controllers
                     var user = await UserManager.FindByIdAsync(item.HeadId);
                     if (user != null) { headfullname = user.FullName; }
                 }
-                var dep = await ApplicationDbContext.Departments.FindAsync(item.DprtmntId);
+                var dep = ApplicationDbContext.Departments.Find(item.DprtmntId);
                 branchs.Add(new BranchViewModel
                 {
                     Id = item.Id,
@@ -131,21 +138,18 @@ namespace EmpAccWebApp.Controllers
             }
             return PartialView(sectors);
         }
-
-        //GET: Projects
-        public ActionResult Projects() => View();
-
+        
         //GET: Creat Employee
-        public ActionResult CreateEmployee() => View();
+        public ActionResult CreateEmployee() => PartialView();
 
         //GET: Creat Department
-        public ActionResult CreateDepartment() => View();
+        public ActionResult CreateDepartment() => PartialView();
 
         //GET: Creat Branch
-        public ActionResult CreateBranch() => View();
+        public ActionResult CreateBranch() => PartialView();
 
         //GET: Creat Sector
-        public ActionResult CreateSector() => View();
+        public ActionResult CreateSector() => PartialView();
 
         /// <summary>
         /// POST: Admin/Create Employee
@@ -153,77 +157,79 @@ namespace EmpAccWebApp.Controllers
         /// <param name="model"> Model of new employee</param>
         /// <returns>View</returns>
         [HttpPost]
-        public async Task<ActionResult> CreateEmployee(RegisterViewModel model)
+        public async Task<ActionResult> CreateEmployee(RegisterNewUserViewModel model)
         {
             if (ModelState.IsValid)
             {
+                //Create new user model
                 ApplicationUser user = new ApplicationUser
                 {
                     Surname = model.Surname,
                     FirstName = model.FirtsName,
                     SecondName = model.SecondName,
+                    FullName = model.Surname + " " + model.FirtsName + " " + model.SecondName,
                     Email = model.Email,
-                    UserName = model.Email
+                    UserName = model.Email,
                 };
-                var result = await _userManager.CreateAsync(user, model.Password);
+                //Add user with current password in db
+                var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
                     return RedirectToAction("Employees");
                 }
             }
-            return View(model);
+            return PartialView(model);
         }
 
-        /// <summary>
-        /// GET: Admin/Edit Employee
-        /// </summary>
-        /// <param name="id">Id of employee</param>
-        /// <returns>View</returns>
-        public async Task<ActionResult> EditEmployee(string id)
-        {
-            ApplicationUser user = await _userManager.FindByIdAsync(id);
-            if (user == null)
-            {
-                return HttpNotFound();
-            }
-            IndexViewModel model = new IndexViewModel
-            {
-                Id = user.Id,
-                Surname = user.Surname,
-                FirstName = user.FirstName,
-                SecondName = user.SecondName,
-                Email = user.Email
-            };
-            return View(model);
-        }
+        ///// <summary>
+        ///// GET: Admin/Edit Employee
+        ///// </summary>
+        ///// <param name="id">Id of employee</param>
+        ///// <returns>View</returns>
+        //public async Task<ActionResult> EditEmployee(string id)
+        //{
+        //    ApplicationUser user = await UserManager.FindByIdAsync(id);
+        //    if (user == null)
+        //    {
+        //        return HttpNotFound();
+        //    }
+        //    IndexViewModel model = new IndexViewModel
+        //    {
+        //        Id = user.Id,
+        //        Surname = user.Surname,
+        //        FirstName = user.FirstName,
+        //        SecondName = user.SecondName,
+        //    };
+        //    return View(model);
+        //}
 
-        /// <summary>
-        /// POST: Admin/Edit Employee
-        /// </summary>
-        /// <param name="model">Model of current emploee</param>
-        /// <returns>View</returns>
-        [HttpPost]
-        public async Task<ActionResult> EditEmployee(IndexViewModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                ApplicationUser user = await _userManager.FindByIdAsync(model.Id);
-                if (user != null)
-                {
-                    if (user.Email != model.Email)
-                    {
-                        user.EmailConfirmed = false;
-                        user.Email = model.Email;
-                    }
-                    var result = await _userManager.UpdateAsync(user);
-                    if (result.Succeeded)
-                    {
-                        return RedirectToAction("Employees");
-                    }
-                }
-            }
-            return View(model);
-        }
+        ///// <summary>
+        ///// POST: Admin/Edit Employee
+        ///// </summary>
+        ///// <param name="model">Model of current emploee</param>
+        ///// <returns>View</returns>
+        //[HttpPost]
+        //public async Task<ActionResult> EditEmployee(IndexViewModel model)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        ApplicationUser user = await UserManager.FindByIdAsync(model.Id);
+        //        if (user != null)
+        //        {
+        //            if (user.Email != model.Email)
+        //            {
+        //                user.EmailConfirmed = false;
+        //                user.Email = model.Email;
+        //            }
+        //            var result = await UserManager.UpdateAsync(user);
+        //            if (result.Succeeded)
+        //            {
+        //                return RedirectToAction("Employees");
+        //            }
+        //        }
+        //    }
+        //    return View(model);
+        //}
 
         /// <summary>
         /// GET: Admin/Delete Employee
@@ -232,10 +238,15 @@ namespace EmpAccWebApp.Controllers
         /// <returns>Redirect to Employee Action </returns>
         public async Task<ActionResult> DeleteEmployee(string id)
         {
-            ApplicationUser user = await _userManager.FindByIdAsync(id);
+            //Find user by id
+            ApplicationUser user = await UserManager.FindByIdAsync(id);
             if (user != null)
             {
-                IdentityResult result = await _userManager.DeleteAsync(user);
+                //Delete links with current user
+                ApplicationDbContext.DeleteUserFromCurrentPosition(user);
+                //Remove user and update db
+                await UserManager.DeleteAsync(user);
+                await ApplicationDbContext.SaveChangesAsync();
             }
             return RedirectToAction("Employees");
         }
@@ -246,13 +257,32 @@ namespace EmpAccWebApp.Controllers
         /// <param name="model">Model of new department</param>
         /// <returns>View</returns>
         [HttpPost]
-        public async Task<ActionResult> CreateDepartment(Department model)
+        public async Task<ActionResult> CreateDepartment(DepartmentViewModel model)
         {
+            string headId = null;
             //Check model
             if (ModelState.IsValid)
             {
+                if(model.HeadFullName != null)
+                {
+                    //Find new head for department
+                    var head = await ApplicationDbContext.FindUserByFullNameAsync(model.HeadFullName);
+                    //Delete old position
+                    ApplicationDbContext.DeleteUserFromCurrentPosition(head);
+                    headId = head.Id;
+                    head.AccessLvl = DEPARTMENTACCSSLVL;
+                }
+                Department dep = new Department
+                {
+                    Id = Convert.ToString(Guid.NewGuid()),
+                    Name = model.Name,
+                    HeadId = headId
+                };
+                //Add department and save changes
+                ApplicationDbContext.Departments.Add(dep);
+                await ApplicationDbContext.SaveChangesAsync();
             }
-            return View(model);
+            return RedirectToAction("Departments");
         }
 
         /// <summary>
@@ -261,13 +291,31 @@ namespace EmpAccWebApp.Controllers
         /// <param name="model">Model of new branch</param>
         /// <returns>View</returns>
         [HttpPost]
-        public async Task<ActionResult> CreateBranch(Branch model)
+        public async Task<ActionResult> CreateBranch(BranchViewModel model)
         {
             if (ModelState.IsValid)
             {
-             
+                string headId = null;
+                if (model.HeadFullName != null)
+                {
+                    var head = await ApplicationDbContext.FindUserByFullNameAsync(model.HeadFullName);
+                    ApplicationDbContext.DeleteUserFromCurrentPosition(head);
+                    headId = head.Id;
+                    head.AccessLvl = BRANCHACCSSLVL;
+                }
+                //Find department id for current branch
+                var dep = await ApplicationDbContext.FindIdOfDepartmentByNameAsync(model.DepartmentName);
+                Branch brc = new Branch
+                {
+                    Id = Convert.ToString(Guid.NewGuid()),
+                    Name = model.Name,
+                    HeadId = headId,
+                    DprtmntId = dep
+                };
+                ApplicationDbContext.Branchs.Add(brc);
+                await ApplicationDbContext.SaveChangesAsync();
             }
-            return View(model);
+            return RedirectToAction("Branchs");
         }
 
         /// <summary>
@@ -276,13 +324,31 @@ namespace EmpAccWebApp.Controllers
         /// <param name="model">Model of new sector</param>
         /// <returns>View</returns>
         [HttpPost]
-        public async Task<ActionResult> CreateSector(Sector model)
+        public async Task<ActionResult> CreateSector(SectorViewModel model)
         {
             if (ModelState.IsValid)
             {
-                
+                string headId = null;
+                if (model.HeadFullName != null)
+                {
+                    var head = await ApplicationDbContext.FindUserByFullNameAsync(model.HeadFullName);
+                    ApplicationDbContext.DeleteUserFromCurrentPosition(head);
+                    headId = head.Id;
+                    head.AccessLvl = SECTORACCSSLVL;
+                }
+                //Find branch id for current sector
+                var brc = await ApplicationDbContext.FindIdOfBranchByNameAsync(model.BranchName);
+                Sector sec = new Sector
+                {
+                    Id = Convert.ToString(Guid.NewGuid()),
+                    Name = model.Name,
+                    HeadId = headId,
+                    BrnchId = brc
+                };
+                ApplicationDbContext.Sectors.Add(sec);
+                await ApplicationDbContext.SaveChangesAsync();
             }
-            return View(model);
+            return RedirectToAction("Sectors");
         }
 
         /// <summary>
@@ -297,11 +363,13 @@ namespace EmpAccWebApp.Controllers
             {
                 return HttpNotFound();
             }
+            //Create department view model
             DepartmentViewModel department = new DepartmentViewModel
             {
                 Id = dep.Id,
                 Name = dep.Name,
             };
+            //Add head full name
             if (dep.HeadId != null)
             {
                 ApplicationUser head = await UserManager.FindByIdAsync(dep.HeadId);
@@ -318,13 +386,22 @@ namespace EmpAccWebApp.Controllers
         /// <returns>View</returns>
         public async Task<ActionResult> EditBranch(string id)
         {
-            Branch brh = await ApplicationDbContext.Branchs.FindAsync(id);
-
-            if (brh == null)
+            Branch brc = await ApplicationDbContext.Branchs.FindAsync(id);
+            Department dep = await ApplicationDbContext.Departments.FindAsync(brc.DprtmntId);
+            if (brc == null) { return HttpNotFound(); }
+            BranchViewModel department = new BranchViewModel
             {
-                return HttpNotFound();
+                Id = brc.Id,
+                Name = brc.Name,
+                DepartmentName = dep.Name
+            };
+            if (brc.HeadId != null)
+            {
+                ApplicationUser head = await UserManager.FindByIdAsync(brc.HeadId);
+                if (head != null) { department.HeadFullName = head.FullName; }
             }
-            return View(brh);
+
+            return PartialView(department);
         }
 
         /// <summary>
@@ -335,12 +412,21 @@ namespace EmpAccWebApp.Controllers
         public async Task<ActionResult> EditSector(string id)
         {
             Sector sec = await ApplicationDbContext.Sectors.FindAsync(id);
-
-            if (sec == null)
+            Branch brc = await ApplicationDbContext.Branchs.FindAsync(sec.BrnchId);
+            if (sec == null) { return HttpNotFound(); }
+            SectorViewModel department = new SectorViewModel
             {
-                return HttpNotFound();
+                Id = sec.Id,
+                Name = sec.Name,
+                BranchName = brc.Name                
+            };
+            if (sec.HeadId != null)
+            {
+                ApplicationUser head = await UserManager.FindByIdAsync(sec.HeadId);
+                if (head != null) { department.HeadFullName = head.FullName; }
             }
-            return View(sec);
+
+            return PartialView(department);
         }
 
         /// <summary>
@@ -376,16 +462,37 @@ namespace EmpAccWebApp.Controllers
             if(!ModelState.IsValid) { return View(dep); }
 
             Department department = await ApplicationDbContext.Departments.FindAsync(dep.Id);
-
+            //Change name of department
             if(department.Name != dep.Name) { department.Name = dep.Name; }
+            //Check new new head full name
             if(dep.HeadFullName == null)
             {
-                if(department.HeadId != null) { department.HeadId = null; }
+                //Delete old user
+                if(department.HeadId != null)
+                {
+                    var user = await UserManager.FindByIdAsync(department.HeadId);
+                    ApplicationDbContext.DeleteUserFromCurrentPosition(user);
+                    department.HeadId = null;
+                }
             }
             else
             {
+                //Find new head
                 ApplicationUser head = await ApplicationDbContext.FindUserByFullNameAsync(dep.HeadFullName);
-                if (head.FullName != dep.HeadFullName) { department.HeadId = head.Id; }
+                ApplicationDbContext.DeleteUserFromCurrentPosition(head);
+                //Compare new and old heads id
+                if (head.Id != department.HeadId)
+                {
+                    //Delete old head
+                    if(department.HeadId != null)
+                    {
+                        var user = ApplicationDbContext.Users.Find(department.HeadId);
+                        ApplicationDbContext.DeleteUserFromCurrentPosition(user);
+                    }
+                    //Update new head
+                    department.HeadId = head.Id;
+                    head.AccessLvl = DEPARTMENTACCSSLVL;
+                }
             }
             await ApplicationDbContext.SaveChangesAsync();
             return RedirectToAction("Departments");
@@ -398,9 +505,18 @@ namespace EmpAccWebApp.Controllers
         /// <returns>Redirect to Action Departments</returns>
         public async Task<ActionResult> DeleteDepartment(string id)
         {
+            //Find department
             Department dep = await ApplicationDbContext.Departments.FindAsync(id);
             if (dep != null)
             {
+                //Clear link with old head
+                if(dep.HeadId != null)
+                {
+                    var head = await UserManager.FindByIdAsync(dep.HeadId);
+                    ApplicationDbContext.DeleteUserFromCurrentPosition(head);
+                }
+                //Delete branchs and sectors in this department
+                ApplicationDbContext.DeleteBranchInCurrentDepartment(dep.Id);
                 ApplicationDbContext.Departments.Remove(dep);
                 await ApplicationDbContext.SaveChangesAsync();
             }
@@ -414,9 +530,18 @@ namespace EmpAccWebApp.Controllers
         /// <returns>Redirect to Action Branchs</returns>
         public async Task<ActionResult> DeleteBranch(string id)
         {
+            //Find branch
             Branch brc = await ApplicationDbContext.Branchs.FindAsync(id);
             if (brc != null)
             {
+                //Clear link with old head
+                if (brc.HeadId != null)
+                {
+                    var head = await UserManager.FindByIdAsync(brc.HeadId);
+                    ApplicationDbContext.DeleteUserFromCurrentPosition(head);
+                }
+                //Delete sectors in currenct branch
+                ApplicationDbContext.DeleteSectorInCurrentBranch(brc.Id);
                 ApplicationDbContext.Branchs.Remove(brc);
                 await ApplicationDbContext.SaveChangesAsync();
             }
@@ -430,9 +555,16 @@ namespace EmpAccWebApp.Controllers
         /// <returns>Redirect to Action Sectors</returns>
         public async Task<ActionResult> DeleteSector(string id)
         {
+            //Find sector
             Sector sec = await ApplicationDbContext.Sectors.FindAsync(id);
             if (sec != null)
             {
+                //Clear link with old head
+                if (sec.HeadId != null)
+                {
+                    var head = await UserManager.FindByIdAsync(sec.HeadId);
+                    ApplicationDbContext.DeleteUserFromCurrentPosition(head);
+                }
                 ApplicationDbContext.Sectors.Remove(sec);
                 await ApplicationDbContext.SaveChangesAsync();
             }
@@ -441,14 +573,36 @@ namespace EmpAccWebApp.Controllers
 
         #region Helpers
 
-        public ActionResult AutocompleteSearch(string term)
+        public ActionResult AutocompleteSearchUsers(string term)
         {
+            //Find term in users full name and cteate model 
             var models = ApplicationDbContext.Users.Where(a => a.FullName.Contains(term))
                             .Select(a => new { value = a.FullName})
                             .Distinct();
 
-            return Json(models);
+            return Json(models, JsonRequestBehavior.AllowGet);
         }
+
+        public ActionResult AutocompleteSearchDepartments(string term)
+        {
+            //Find term in departments name and create model 
+            var models = ApplicationDbContext.Departments.Where(a => a.Name.Contains(term))
+                            .Select(a => new { value = a.Name })
+                            .Distinct();
+
+            return Json(models, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult AutocompleteSearchBranchs(string term)
+        {
+            //Find term in branchs name and cteate model 
+            var models = ApplicationDbContext.Branchs.Where(a => a.Name.Contains(term))
+                            .Select(a => new { value = a.Name })
+                            .Distinct();
+
+            return Json(models, JsonRequestBehavior.AllowGet);
+        }
+
         #endregion
     }
 }

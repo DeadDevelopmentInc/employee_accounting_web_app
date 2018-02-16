@@ -52,27 +52,31 @@ namespace EmpAccWebApp.Controllers
 
         //
         // GET: /Manage/Index
-        public async Task<ActionResult> Index(ManageMessageId? message)
+        public async Task<ActionResult> Index()
         {
-            ViewBag.StatusMessage =
-                message == ManageMessageId.ChangePasswordSuccess ? "Your password has been changed."
-                : message == ManageMessageId.SetPasswordSuccess ? "Your password has been set."
-                : message == ManageMessageId.SetTwoFactorSuccess ? "Your two-factor authentication provider has been set."
-                : message == ManageMessageId.Error ? "An error has occurred."
-                : message == ManageMessageId.AddPhoneSuccess ? "Your phone number was added."
-                : message == ManageMessageId.RemovePhoneSuccess ? "Your phone number was removed."
-                : "";
+            var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
 
-            var userId = User.Identity.GetUserId();
             var model = new IndexViewModel
             {
-                HasPassword = HasPassword(),
-                PhoneNumber = await UserManager.GetPhoneNumberAsync(userId),
-                TwoFactor = await UserManager.GetTwoFactorEnabledAsync(userId),
-                Logins = await UserManager.GetLoginsAsync(userId),
-                BrowserRemembered = await AuthenticationManager.TwoFactorBrowserRememberedAsync(userId)
+                Surname = user.Surname,
+                FirstName = user.FirstName,
+                SecondName = user.SecondName,
+                ProfilePhoto = user.ProfilePhoto                
             };
-            return View(model);
+            return PartialView(model);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> Upload(HttpPostedFileBase upload)
+        {
+            var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+            if (upload != null)
+            {
+                user.ProfilePhoto = Server.MapPath("~/Content/media/" + user.Id + ".jpg");
+                await UserManager.UpdateAsync(user);
+                upload.SaveAs(user.ProfilePhoto);
+            }
+            return RedirectToAction("Index");
         }
 
         //
@@ -334,6 +338,9 @@ namespace EmpAccWebApp.Controllers
         }
 
 #region Helpers
+
+
+
         // Used for XSRF protection when adding external logins
         private const string XsrfKey = "XsrfId";
 

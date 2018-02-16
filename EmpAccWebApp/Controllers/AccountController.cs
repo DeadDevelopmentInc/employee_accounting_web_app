@@ -158,7 +158,9 @@ namespace EmpAccWebApp.Controllers
                     SecondName = model.SecondName,
                     FullName = model.Surname + " " + model.FirtsName + " " + model.SecondName,
                     UserName = model.Email,
-                    Email = model.Email };
+                    Email = model.Email,
+                    ProfilePhoto = model.PhotoProfile
+                };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {

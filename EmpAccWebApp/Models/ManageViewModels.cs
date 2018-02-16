@@ -23,15 +23,6 @@ namespace EmpAccWebApp.Models
         [Display(Name = "Surname")]
         public string Surname { get; set; }
 
-        [Display(Name = "Current department")]
-        public string Department { get; set; }
-
-        [Display(Name = "Current sector")]
-        public string Sector { get; set; }
-
-        [Display(Name = "Current branch")]
-        public string Branch { get; set; }
-
         [Display(Name = "Current place (Cabinet)")]
         public string Place { get; set; }
 

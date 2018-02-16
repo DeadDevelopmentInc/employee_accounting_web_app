@@ -17,8 +17,7 @@
     <div class="form-group">
         <div class="col-md-10">
             @Html.LabelFor(m => m.HeadFullName, new { @class = "control-label" })
-            @Html.TextBoxFor(m => m.HeadFullName, new { @class = "form-control", id = "HeadEmpl" })
-            @Html.ValidationMessageFor(m => m.HeadFullName)
+            <input type="text" class="form-control" name="HeadFullName" data-autocomplete-source='@Url.Action("AutocompleteSearchUsers", "Admin")' />
         </div>
     </div>
     <div class="form-group">
@@ -30,14 +29,15 @@
 
 
 @section Scripts{
+    <script src='@Url.Content("~/Scripts/jquery-1.12.4.min.js")' type="text/javascript"></script>
+    <script src='@Url.Content("~/Scripts/jquery-ui-1.12.1.min.js")' type="text/javascript"></script>
     <script type="text/javascript">
-    $(function () {
-        var autocompleteUrl = '@Url.Action("AutocompleteSearch")';
-            $("input#HeadEmpl").autocomplete({
-            source: autocompleteUrl,
-            minLength: 2
+        $(function () {
+            $("[data-autocomplete-source]").each(function () {
+                var target = $(this);
+                target.autocomplete({ source: target.attr("data-autocomplete-source") });
             });
-    });
+        });
     </script>
 
 }
