@@ -210,15 +210,19 @@
     <Compile Include="Migrations\201802131425545_UpdateDbOfDep.Designer.cs">
       <DependentUpon>201802131425545_UpdateDbOfDep.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201802201437241_AddSkills.cs" />
+    <Compile Include="Migrations\201802201437241_AddSkills.Designer.cs">
+      <DependentUpon>201802201437241_AddSkills.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\AdminViewModels.cs" />
     <Compile Include="Models\Departments\Branch.cs" />
     <Compile Include="Models\Departments\Department.cs" />
-    <Compile Include="Models\Departments\HelpFunctionForEditDepartments.cs" />
     <Compile Include="Models\Departments\Sector.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\SkillsModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -286,6 +290,17 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\js_bar\dist\jquery.barrating.min.js" />
+    <Content Include="Scripts\js_bar\dist\themes\bars-1to10.css" />
+    <Content Include="Scripts\js_bar\dist\themes\bars-horizontal.css" />
+    <Content Include="Scripts\js_bar\dist\themes\bars-movie.css" />
+    <Content Include="Scripts\js_bar\dist\themes\bars-pill.css" />
+    <Content Include="Scripts\js_bar\dist\themes\bars-reversed.css" />
+    <Content Include="Scripts\js_bar\dist\themes\bars-square.css" />
+    <Content Include="Scripts\js_bar\dist\themes\bootstrap-stars.css" />
+    <Content Include="Scripts\js_bar\dist\themes\css-stars.css" />
+    <Content Include="Scripts\js_bar\dist\themes\fontawesome-stars-o.css" />
+    <Content Include="Scripts\js_bar\dist\themes\fontawesome-stars.css" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
@@ -339,6 +354,9 @@
     <Content Include="Views\Admin\_Layout.cshtml" />
     <Content Include="Views\Admin\_LoginPartial.cshtml" />
     <Content Include="Views\Manage\_Layout.cshtml" />
+    <Content Include="Views\Manage\EditSkills.cshtml" />
+    <Content Include="Views\Manage\Skills.cshtml" />
+    <Content Include="Scripts\js_bar\dist\jquery.barrating.min.js.map" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -361,6 +379,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201802131425545_UpdateDbOfDep.resx">
       <DependentUpon>201802131425545_UpdateDbOfDep.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201802201437241_AddSkills.resx">
+      <DependentUpon>201802201437241_AddSkills.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

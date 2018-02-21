@@ -7,12 +7,14 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using EmpAccWebApp.Models;
+using System.Collections.Generic;
 
 namespace EmpAccWebApp.Controllers
 {
     [Authorize]
     public class ManageController : Controller
     {
+        private ApplicationDbContext _context;
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
 
@@ -32,9 +34,9 @@ namespace EmpAccWebApp.Controllers
             {
                 return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
             }
-            private set 
-            { 
-                _signInManager = value; 
+            private set
+            {
+                _signInManager = value;
             }
         }
 
@@ -50,6 +52,18 @@ namespace EmpAccWebApp.Controllers
             }
         }
 
+        public ApplicationDbContext ApplicationDbContext
+        {
+            get
+            {
+                return _context ?? HttpContext.GetOwinContext().Get<ApplicationDbContext>();
+            }
+            private set
+            {
+                _context = value;
+            }
+        }
+
         //
         // GET: /Manage/Index
         public async Task<ActionResult> Index()
@@ -61,9 +75,18 @@ namespace EmpAccWebApp.Controllers
                 Surname = user.Surname,
                 FirstName = user.FirstName,
                 SecondName = user.SecondName,
-                ProfilePhoto = user.ProfilePhoto                
+                ProfilePhoto = user.ProfilePhoto
             };
             return PartialView(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Index(IndexViewModel model)
+        {
+            if (!ModelState.IsValid) { return PartialView(model); }
+
+            return RedirectToAction("Index");
         }
 
         [HttpPost]
@@ -77,6 +100,32 @@ namespace EmpAccWebApp.Controllers
                 upload.SaveAs(user.ProfilePhoto);
             }
             return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> Skills()
+        {
+            var skills = await ApplicationDbContext.ApplicationUserSkills.FindAsync(User.Identity.GetUserId());
+            if (skills != null)
+            {
+                return PartialView(skills);
+            }
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> Skills(SkillsModel skills)
+        {
+            if(ModelState.IsValid)
+            {
+                var userSkills = await ApplicationDbContext.ApplicationUserSkills.FindAsync(User.Identity.GetUserId());
+                if (userSkills != null)
+                {
+                    userSkills = skills;
+                    await ApplicationDbContext.SaveChangesAsync();
+                }
+            }
+            return RedirectToAction("Skills");
         }
 
         //

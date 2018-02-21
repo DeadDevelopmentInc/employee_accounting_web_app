@@ -1,0 +1,27 @@
+﻿@model EmpAccWebApp.Models.EditSkillsViewModel
+@{
+    Layout = "~/Views/Manage/_Layout.cshtml";
+}
+
+<div class="form-control">
+    <h3>Professional skills</h3>
+    <div class="row">
+        @using (Ajax.BeginForm("EditSkills", new AjaxOptions { }))
+        {
+            <div class="col-md-4">
+                <h4>Programming languages</h4>
+                <div class="form-group">
+
+                </div>
+            </div>
+            <div class="col-md-2">
+
+            </div>
+            <div class="col-md-4">
+
+            </div>
+        }
+
+    </div>
+</div>
+

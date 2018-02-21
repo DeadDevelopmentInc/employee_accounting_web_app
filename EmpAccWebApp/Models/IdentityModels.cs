@@ -32,6 +32,7 @@ namespace EmpAccWebApp.Models
         public DbSet<Department> Departments { get; set; }
         public DbSet<Branch> Branchs { get; set; }
         public DbSet<Sector> Sectors { get; set; }
+        public DbSet<SkillsModel> ApplicationUserSkills { get; set; }
 
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)

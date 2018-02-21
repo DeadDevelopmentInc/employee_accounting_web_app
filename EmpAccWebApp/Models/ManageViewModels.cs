@@ -48,6 +48,12 @@ namespace EmpAccWebApp.Models
         public bool BrowserRemembered { get; set; }
     }
 
+    public class EditSkillsViewModel
+    {
+
+    }
+
+
     public class ManageLoginsViewModel
     {
         public IList<UserLoginInfo> CurrentLogins { get; set; }
